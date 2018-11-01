@@ -10,7 +10,6 @@ public class HUD {
 	public static int HEALTH = 100;
 	
 	public void tick() {
-		HEALTH -= 1;
 		HEALTH = Game.clamp(HEALTH, 0, 100); // 많이 사용함. 틀 (room) 벗어나지 못하게! --> 여기선 HP 창
 	} // tick()
 	

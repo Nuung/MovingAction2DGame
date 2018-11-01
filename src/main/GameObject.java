@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
 // 추상화 class -> 찍어내기만 하는 틀! / player / enemy / coin / etc... object 찍는 틀
 public abstract class GameObject {
@@ -22,6 +23,11 @@ public abstract class GameObject {
 	// 각 찍어내지는 object는 기본적으로 아래 메소드를 가져야 한다
 	public abstract void tick();
 	public abstract void render(Graphics g);
+	
+	// Rectangle 은 사각형. (특정 값 명시전엔 투명함) getBounds는 위치를 가져온다는 의미의 메소드
+	// -> 특정 사각형의 Bounds값은 왼쪽 위 임을 명시하자, 그 값을 기준으로 우리는 특정 값이 되면 충돌인지 아닌지
+	// 체킹할 수 있다. 충돌의 가장 기본 로직, 각 점의 충돌 지점이 어디인지 직접 그려보자
+	public abstract Rectangle getBounds();
 
 	// Getter and Setter
 	public int getX() {

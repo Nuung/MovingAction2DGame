@@ -5,6 +5,8 @@ package main;
 public enum ID {
 	
 	// 각 object에게 특정 int 값을 준다
-	Player(), Enemy();
+	Player(), // player는 플레이어
+	Enemy(), // 기본적인 적군 지정
+	Trail(); // AI 컴퓨터로써 기능, tracing, 따라가는 충돌러
 	
 }
