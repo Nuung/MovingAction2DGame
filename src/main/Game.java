@@ -4,6 +4,7 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.Random;
 
 // main 쓰레드는 여기 있음, static 임!
 public class Game extends Canvas implements Runnable {
@@ -15,10 +16,24 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 	private boolean running = false; // thread 프로세싱의 처리위한 논리변수
 	
+	private Random r; // 난수 생성 object, enemy의 moving 액션을 난수화 하기 위해서 사용
+	
+	// 모든 게임 오브젝트, 링크드 리스트 -> 티킹, 랜더링
+	private Handler handler; // 우린 그냥 Handler 클래스의 tick, render 메소드만 한번 호출하면, 모든 오브젝트에 대해 명령 하달됨
+	
 	// 생성자
-	public Game() {
+	public Game() { 
+		// 생성자 내부 오브젝트 이니셜라이징 순서 중요함
+		handler = new Handler();
+		this.addKeyListener(new KeyInput(handler)); // 키 액션 리스너 this object(Canvas)에 등록
+		
 		new Window(WIDTH, HEIGHT, "GAME", this);
-	}
+		
+		r = new Random();
+		
+		handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player)); // player object 추가, 위치는 정 가운데
+		
+	} // Game의 최고 이니셜 라이징
 
 	public synchronized void start() {
 		thread = new Thread(this); // 쓰레드 object에 game object 전달
@@ -75,7 +90,7 @@ public class Game extends Canvas implements Runnable {
 	} // run()
 	
 	private void tick() {
-		
+		handler.tick();
 	}
 	
 	private void render() {
@@ -93,6 +108,8 @@ public class Game extends Canvas implements Runnable {
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		handler.render(g);
 		
 		g.dispose();
 		bs.show();
