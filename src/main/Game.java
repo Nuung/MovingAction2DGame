@@ -10,7 +10,7 @@ import java.util.Random;
 public class Game extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 6691247796639148462L;
-	private static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9; // 높이는 넓이에 상대적으로 비례하도록 지정 1대 9/12 비율
+	public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9; // 높이는 넓이에 상대적으로 비례하도록 지정 1대 9/12 비율
 	
 	// thread 처리의 기본 멤버 변수
 	private Thread thread;
@@ -20,6 +20,7 @@ public class Game extends Canvas implements Runnable {
 	
 	// 모든 게임 오브젝트, 링크드 리스트 -> 티킹, 랜더링
 	private Handler handler; // 우린 그냥 Handler 클래스의 tick, render 메소드만 한번 호출하면, 모든 오브젝트에 대해 명령 하달됨
+	private HUD hud;
 	
 	// 생성자
 	public Game() { 
@@ -29,9 +30,15 @@ public class Game extends Canvas implements Runnable {
 		
 		new Window(WIDTH, HEIGHT, "GAME", this);
 		
+		hud = new HUD();
 		r = new Random();
 		
 		handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player)); // player object 추가, 위치는 정 가운데
+		
+		for(int i = 0; i < 20; i++) { // 여러 에너미 생성 예제
+			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy)); // 기본 Red색 Enemy object 추가
+		}
+
 		
 	} // Game의 최고 이니셜 라이징
 
@@ -48,11 +55,13 @@ public class Game extends Canvas implements Runnable {
 			running = false;
 		} catch(Exception e) {
 			e.printStackTrace();
-		}
+		} // try ~ catch
 	} // start -> 게임 진행을 돌아가게 하는 최상위 프로세스 개념
 
 	@Override // in 쓰레드의 런에이블 인터페이스의 유일한 메소드
 	public void run() {
+		this.requestFocus(); // os에게 현재 창을 포커스해라는 명령
+		
 		// 초당 프레임 설정을 위한 기본적인 로직
 		// 2D 쓰레딩, 프로세싱 에선 기본적으로 아래와 같은 로직을 사용한다
 		// tick 은 게임적 요소 이니셜라이징과 이벤트 처리
@@ -91,7 +100,8 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		handler.tick();
-	}
+		hud.tick();
+	} // tick()
 	
 	private void render() {
 		// 렌더링에는 기본적으로 모니터 출력의 이미지 버퍼 전략을 사용함
@@ -109,14 +119,30 @@ public class Game extends Canvas implements Runnable {
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
+		// 순서 중요합니다~
 		handler.render(g);
+		hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다
 		
 		g.dispose();
 		bs.show();
-	}
+	} // render()
+	
+	// object들이 Frame ( = room)을 벗어나지 못하게! 가두기 메소드
+	public static int clamp(int var, int min, int max) {
+		// 로직은 간단하다, var에 좌표값이 들어오고 가질 수 있는 최소 좌표값과 최대 좌표값을 넣어준다
+		// 아래 조건에 맞게, var 값을 return으로 조져줘서 알아서 못 벗어나게 만들어 준다 
+		if(var >= max) // 현 좌표가 최대값 넘으면
+			return var = max; // 최대값으로만 계속 유지
+		else if(var <= min) { // 최소값보다 작으면 --> 이하 동문
+			return var = min;
+		} else {
+			return var;
+		} // if ~ else if ~ else
+		
+	} // clamp()
 	
 	public static void main(String args[]) {
 		new Game(); // this object의 생성자를 호출 
-	} // main
+	} // MAIN
 	
 } // Game Class

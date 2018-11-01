@@ -26,6 +26,7 @@ public class Window extends Canvas {
 		frame.setLocationRelativeTo(null); // 프레임이 열리는 위치가 상대적인 위치가 안되도록
 		frame.add(game);
 		frame.setVisible(true);
+		frame.pack();
 		game.start();
 		
 	}
