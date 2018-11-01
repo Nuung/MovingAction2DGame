@@ -21,6 +21,7 @@ public class Game extends Canvas implements Runnable {
 	// 모든 게임 오브젝트, 링크드 리스트 -> 티킹, 랜더링
 	private Handler handler; // 우린 그냥 Handler 클래스의 tick, render 메소드만 한번 호출하면, 모든 오브젝트에 대해 명령 하달됨
 	private HUD hud;
+	private Spawn spawner;
 	
 	// 생성자
 	public Game() { 
@@ -30,14 +31,16 @@ public class Game extends Canvas implements Runnable {
 		
 		new Window(WIDTH, HEIGHT, "GAME", this);
 		
+		// null point error (null object) 를 잡는게 결국 객체 지향에서 기본 도덕
 		hud = new HUD();
+		spawner = new Spawn(handler, hud);
 		r = new Random();
 		
 		handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
 		
-		for(int i = 0; i < 5; i++) { // 여러 에너미 생성 예제
-			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
-		}
+//		for(int i = 0; i < 5; i++) { // 여러 에너미 생성 예제
+		handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
+//		}
 
 		
 	} // Game의 최고 이니셜 라이징
@@ -101,6 +104,7 @@ public class Game extends Canvas implements Runnable {
 	private void tick() {
 		handler.tick();
 		hud.tick();
+		spawner.tick();
 	} // tick()
 	
 	private void render() {
@@ -120,9 +124,9 @@ public class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		// 순서 중요합니다~
-		hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다
-		handler.render(g);
-
+		hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다 
+		handler.render(g); // 하지만 서로 의존적이고 참조 정도가 매우 크다. 순서에 매우 유의하자
+		
 		
 		g.dispose();
 		bs.show();
