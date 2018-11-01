@@ -33,10 +33,10 @@ public class Game extends Canvas implements Runnable {
 		hud = new HUD();
 		r = new Random();
 		
-		handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player)); // player object 추가, 위치는 정 가운데
+		handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
 		
-		for(int i = 0; i < 20; i++) { // 여러 에너미 생성 예제
-			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy)); // 기본 Red색 Enemy object 추가
+		for(int i = 0; i < 5; i++) { // 여러 에너미 생성 예제
+			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
 		}
 
 		
@@ -118,10 +118,11 @@ public class Game extends Canvas implements Runnable {
 		
 		g.setColor(Color.BLACK);
 		g.fillRect(0, 0, WIDTH, HEIGHT);
-		
+
 		// 순서 중요합니다~
-		handler.render(g);
 		hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다
+		handler.render(g);
+
 		
 		g.dispose();
 		bs.show();
