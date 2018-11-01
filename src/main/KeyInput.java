@@ -9,25 +9,48 @@ public class KeyInput extends KeyAdapter {
 	// handler가 모든 object를 노드, 링크드 리스트 형태로 제어한다는 점 잊지말자
 	private Handler handler;
 	
+	// 생성자
 	public  KeyInput(Handler handler) {
 		this.handler = handler;  // 추후 동작을 위해 handler 객체 가지고 있기
 	}
 	
 	public void keyPressed(KeyEvent e) { // key 눌렀을때
 		int key = e.getKeyCode(); // 특정 키값 입력받기 
-		System.out.println(key);
+		
+		// Key events for player 
+		// handler.object.size는 링크드 리스트의 토탈 사이즈 (개수가) 됨
+		// 즉, 모든 object 개수만큼 액션 지정(event 추가) 돌린다는 의미임
 		for(int i = 0; i < handler.object.size(); i++) {
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Player) {
-				// Key events for player 1
-				
+				// KeyEvent Class는 키보드의 특정 키 값을 변수형식으로 가지고 있음
+				if(key == KeyEvent.VK_W) tempObject.setValY(-5);
+				if(key == KeyEvent.VK_S) tempObject.setValY(5);
+				if(key == KeyEvent.VK_A) tempObject.setValX(-5);
+				if(key == KeyEvent.VK_D) tempObject.setValX(5);
+			} // if
+		} // for
+		
+		if(key == KeyEvent.VK_ESCAPE) System.exit(1); // ESC 키 누르면 걍 게임꺼지게 
+		
+	} // keyPressed()
+	
+	public void keyReleased(KeyEvent e) { // key 땠을때
+		int key = e.getKeyCode(); // 특정 키값 입력받기 
+		
+		for(int i = 0; i < handler.object.size(); i++) {
+			GameObject tempObject = handler.object.get(i);
+			if(tempObject.getId() == ID.Player) {
+				// Key events for player
+				// 키를 때면 움직임을 멈춰야함! -> 특정 땐 키 값에 대한 그 방향의 변수만 바꿔줘야 부드러운 움직임 완성
+				if(key == KeyEvent.VK_W) tempObject.setValY(0);
+				if(key == KeyEvent.VK_S) tempObject.setValY(0);
+				if(key == KeyEvent.VK_A) tempObject.setValX(0);
+				if(key == KeyEvent.VK_D) tempObject.setValX(0);
 				
 			} // if
 		} // for
-	}
-	
-	public void keyReleased(KeyEvent e) { // key 땠을때
 		
-	}
+	} // keyReleased()
 	
 }
