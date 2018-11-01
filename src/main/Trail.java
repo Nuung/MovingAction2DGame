@@ -6,8 +6,11 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
 
-// AI 컴퓨터로써 기능, tracing, 따라가는 충돌러
 // 잔향 남기는 이펙트 object 추가하기! 모든object에 대해 해당하는 Trail obejct를 또 추가하면 됨
+/*
+ This class는 alpha와 DST 같은 영상 처리 기법이 들어간다. --> 이미지를 트래이싱하며 랜더링의 변조가 들어가고,
+ 그로 인해서 잔향이 남게 해주는 효과를 주는 것  AlphaComposite 라는 Class (liabrary에 존재함)알아야 함
+ */
 public class Trail extends GameObject {
 
 	// member val
