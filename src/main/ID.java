@@ -8,6 +8,7 @@ public enum ID {
 	Player(), // player는 플레이어
 	Enemy(), // 기본적인 적군 지정
 	FastEnemy(), // 빠른 적군
+	SmartEnemy(), // AI
 	Trail(); // tracing, 따라가는 잔향 이펙터
 	
 	
