@@ -4,7 +4,11 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.Random;
+
+import database.DBConnection;
 
 // main 쓰레드는 여기 있음, static 임!
 public class Game extends Canvas implements Runnable {
@@ -148,6 +152,22 @@ public class Game extends Canvas implements Runnable {
 	
 	public static void main(String args[]) {
 		new Game(); // this object의 생성자를 호출 
+		DBConnection connection = new DBConnection();
+		System.out.println("gooname test DB : " + connection.isAdmin("강남구"));
+		ResultSet result = connection.getResultSet("강남구");
+		
+		try {
+			do { // next하면 포인트가 다음을 다르킨다 생각하자
+				String name = result.getString("name");
+				String gooname = result.getString("gooname");
+				String dongname = result.getString("dongname");
+				System.out.println(name + ", " + gooname + ", " + dongname);
+			} while(result.next()); // do - while : 첫번째 결과 row값도 실행하기 위해
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} // try - catch
+		
 	} // MAIN
 	
 } // Game Class
