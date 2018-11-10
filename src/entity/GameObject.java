@@ -1,7 +1,9 @@
-package main;
+package entity;
 
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import main.objecttype.ID;
 
 // 추상화 class -> 찍어내기만 하는 틀! / player / enemy / coin / etc... object 찍는 틀
 public abstract class GameObject {

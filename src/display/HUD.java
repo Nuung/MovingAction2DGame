@@ -1,7 +1,12 @@
-package main;
+package display;
 
 import java.awt.Color;
 import java.awt.Graphics;
+
+import javax.swing.JOptionPane;
+
+import database.DBConnection;
+import main.Game;
 
 // obejct의 상태에 대한 정보를 가지고, 그 정보를 ticking, redering 해주는 class
 // ex) LV, SCORE, HEALTH, etc
@@ -23,6 +28,20 @@ public class HUD {
 		// 결국 Health 막대기는 Red에 가까워 진다. --> 색깔 이펙트의 기본 로직
 		greenValue = HEALTH * 2;
 		score = score + 1;
+		
+		// test line
+		if(HEALTH <= 0) {
+			int result = JOptionPane.showConfirmDialog(null, "You Are DEAD", "Select", JOptionPane.YES_NO_OPTION);
+			if(result == JOptionPane.YES_OPTION) {
+				DBConnection dbScore = new DBConnection();
+				dbScore.InsertScore(this.score);
+				System.exit(0);
+			} // inner if
+			else {
+				System.exit(0);
+			}
+		} // if
+		
 	} // tick()
 	
 	public void render(Graphics g) {

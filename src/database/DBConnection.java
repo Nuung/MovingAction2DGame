@@ -20,15 +20,15 @@ public class DBConnection {
 		// DB 커넥션 예외 처리 try - catch
 		try {
 			Class.forName("com.mysql.jdbc.Driver"); // library의 Dirver Class참조
-			con = DriverManager.getConnection("JDBC:mysql://localhost:3306/searching", 
+			con = DriverManager.getConnection("JDBC:mysql://localhost:3306/gillfriend", 
 					dbConfigue.getdbName(), dbConfigue.getdbPass());
 			st = con.createStatement();
-			
 		} catch(Exception e) {
 			System.out.println("DB error : " + e.getMessage());
 		} // try - catch
 	} // 생성자
 	
+	/* searching DB에서 testing
 	// SQL, 실행 기본 구조
 	public boolean isAdmin(String gooname) {
 		try {
@@ -55,5 +55,27 @@ public class DBConnection {
 		} // try - catch
 		return rs;
 	}
+	*/
+	
+	// DB에 Game Score Insert [ gillfriend DB ]
+	public void InsertScore(int score) {
+		int isInsert;
+		String playerName = "HyeonWoo";
+		
+		try {
+			String SQL = "INSERT INTO gamescore(name, score)";
+			SQL += " VALUES(" + "'"+playerName+"', '"+score+"')";
+			
+			// DB값 UPDATE의 경우, 사용하는 메소드가 달라짐을 유의
+			isInsert = st.executeUpdate(SQL);
+			 System.out.println(isInsert > 0 ?"등록 성공":"등록 실패");
+			
+			 // DB 자원 반납
+			 st.close(); con.close();
+		} catch(Exception e) {
+			System.out.println(" DB searching error (in SQL 구문) : " + e.getMessage());
+		} // try - catch
+	} // InsertScore()
+	
 	
 } // DBConnection Class

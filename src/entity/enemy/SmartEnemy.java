@@ -1,8 +1,14 @@
-package main;
+package entity.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+
+import display.Trail;
+import entity.GameObject;
+import main.Game;
+import main.objecttype.Handler;
+import main.objecttype.ID;
 
 // GameObject가 abstract 임을 진가를 보이는 Class!
 public class SmartEnemy extends GameObject {
