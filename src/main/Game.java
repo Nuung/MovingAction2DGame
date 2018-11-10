@@ -4,16 +4,12 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Random;
 
-import database.DBConnection;
 import display.HUD;
 import display.Window;
 import entity.Player;
 import entity.enemy.BasicEnemy;
-import entity.enemy.EnemyBoss;
 import event.KeyInput;
 import event.Spawn;
 import main.objecttype.Handler;
@@ -35,12 +31,24 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler; // 우린 그냥 Handler 클래스의 tick, render 메소드만 한번 호출하면, 모든 오브젝트에 대해 명령 하달됨
 	private HUD hud;
 	private Spawn spawner;
+	private Menu menu; // 메뉴 state!
+	
+	// 게임 메뉴를 위한 열거형 데이터 추가
+	public enum STATE {
+		Menu,
+		Game,
+		Help
+	}
+	
+	public STATE gameState = STATE.Menu;
 	
 	// 생성자
 	public Game() { 
 		// 생성자 내부 오브젝트 이니셜라이징 순서 중요함
 		handler = new Handler();
+		menu = new Menu(this, handler);
 		this.addKeyListener(new KeyInput(handler)); // 키 액션 리스너 this object(Canvas)에 등록
+		this.addMouseListener(menu); // 마우스 액션
 		
 		new Window(WIDTH, HEIGHT, "GAME", this);
 		
@@ -49,11 +57,16 @@ public class Game extends Canvas implements Runnable {
 		spawner = new Spawn(handler, hud);
 		r = new Random();
 		
-		handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
-		
-//		for(int i = 0; i < 5; i++) { // 여러 에너미 생성 예제
-		handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
-//		}
+		// GameState값이 Game일때만
+		if(gameState == STATE.Game) {
+			handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
+//			for(int i = 0; i < 5; i++) { // 여러 에너미 생성 예제
+			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
+//			}
+		} // if
+		else if(gameState == STATE.Menu){
+
+		} // else if ( Menu 상태 )
 		
 	} // Game의 최고 이니셜 라이징
 
@@ -115,8 +128,18 @@ public class Game extends Canvas implements Runnable {
 	
 	private void tick() {
 		handler.tick();
-		hud.tick();
-		spawner.tick();
+		
+		// GameState값이 Game일때만
+		if(gameState == STATE.Game) {
+			hud.tick();
+			spawner.tick();
+		} // if
+		else if(gameState == STATE.Menu){
+			menu.tick();
+		} // else if ( Menu 상태 )
+//		else if(gameState == STATE.Help){
+//			menu.tick();
+//		} // else if ( Menu 상태 )
 	} // tick()
 	
 	private void render() {
@@ -136,10 +159,16 @@ public class Game extends Canvas implements Runnable {
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 
 		// 순서 중요합니다~
-		hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다 
 		handler.render(g); // 하지만 서로 의존적이고 참조 정도가 매우 크다. 순서에 매우 유의하자
 		
-		
+		// GameState값이 Game일때만
+		if(gameState == STATE.Game) {
+			hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다 
+		} // if
+		else if(gameState == STATE.Menu || gameState == STATE.Help){
+			menu.render(g);
+		} // else if ( Menu 상태 or Help )
+
 		g.dispose();
 		bs.show();
 	} // render()
@@ -160,7 +189,6 @@ public class Game extends Canvas implements Runnable {
 	
 	public static void main(String args[]) {
 		new Game(); // this object의 생성자를 호출 
-		
 		
 		/* searching DB에서 test set
 		DBConnection connection = new DBConnection();
