@@ -4,6 +4,7 @@ import java.awt.Graphics;
 import java.util.LinkedList;
 
 import entity.GameObject;
+import entity.Player;
 
 // handler 는 object들을 계속해서 최신상태로 유지해 주는 역할을 한다.
 // java 특성상, 객체 지향에서, 핵심 객체들을 상호작용하게 도와주는 Class
@@ -41,5 +42,18 @@ public class Handler {
 	public void removeObject(GameObject object) {
 		this.object.remove(object);
 	}
+	
+	// 존재하는 모든 enemy type의 object들 없애기 -> 보스 등장 고조 위해
+	public void clearEnemys() {
+		// 노드들 다 검색위해 for
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			// player 오브젝트 만나면 일단 다 비우고 다시 플레이어 만들어주깅
+			if(tempObject.getId() == ID.Player) {
+				object.clear();
+				addObject(new Player(tempObject.getX(), tempObject.getY(), ID.Player, this));
+			} // if
+		} // for
+	} // clearEnemys()
 	
 }

@@ -13,6 +13,7 @@ import display.HUD;
 import display.Window;
 import entity.Player;
 import entity.enemy.BasicEnemy;
+import entity.enemy.EnemyBoss;
 import event.KeyInput;
 import event.Spawn;
 import main.objecttype.Handler;
@@ -53,7 +54,6 @@ public class Game extends Canvas implements Runnable {
 //		for(int i = 0; i < 5; i++) { // 여러 에너미 생성 예제
 		handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
 //		}
-
 		
 	} // Game의 최고 이니셜 라이징
 

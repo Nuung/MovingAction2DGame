@@ -37,6 +37,9 @@ public class HUD {
 				dbScore.InsertScore(this.score);
 				System.exit(0);
 			} // inner if
+			else {
+				System.exit(0);
+			}
 		} // if
 		
 	} // tick()
