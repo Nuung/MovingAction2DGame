@@ -1,7 +1,9 @@
-package main;
+package main.objecttype;
 
 import java.awt.Graphics;
 import java.util.LinkedList;
+
+import entity.GameObject;
 
 // handler 는 object들을 계속해서 최신상태로 유지해 주는 역할을 한다.
 // java 특성상, 객체 지향에서, 핵심 객체들을 상호작용하게 도와주는 Class
@@ -10,7 +12,7 @@ public class Handler {
 	// 우리는 GameObject (abstract) class로 여러 형태 object를 찍어낸다!
 	// 그 모든 object를 list, 더 나아가 Head와 Tail을 가지는 LinkedList 형태로 구현
 	// 각 Game object 로 만들어진 palyer, enemy, coin etc 들은 노드로 저장된다
-	LinkedList<GameObject> object = new LinkedList<GameObject>();
+	public LinkedList<GameObject> object = new LinkedList<GameObject>();
 	
 	// 노드형태로 저장된 모든 GameObject에 대한 메소드 접근 구현
 	// 쓰레딩이 된다면, 모든 게임 오브젝트가 다 알아서 ticking, rendering 되도록 구현하기 위해 이런 구조 사용

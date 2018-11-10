@@ -1,6 +1,14 @@
-package main;
+package event;
 
 import java.util.Random;
+
+import display.HUD;
+import entity.enemy.BasicEnemy;
+import entity.enemy.FastEnemy;
+import entity.enemy.SmartEnemy;
+import main.Game;
+import main.objecttype.Handler;
+import main.objecttype.ID;
 
 // 특정 원하는 object를 Spawn (일정 텀또는 조건으로 스폰닝, object를 생성한다는 의미)  
 // 조건이라면 'score --> level system' 을 통해서, 상위로 간다면, enemy를 spawn한다는 액션이 된다

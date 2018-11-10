@@ -1,9 +1,11 @@
-package main;
+package display;
 
 import java.awt.Canvas;
 import java.awt.Dimension;
 
 import javax.swing.JFrame;
+
+import main.Game;
 
 public class Window extends Canvas {
 

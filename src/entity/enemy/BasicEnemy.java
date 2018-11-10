@@ -1,19 +1,25 @@
-package main;
+package entity.enemy;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 
+import display.Trail;
+import entity.GameObject;
+import main.Game;
+import main.objecttype.Handler;
+import main.objecttype.ID;
+
 // GameObject가 abstract 임을 진가를 보이는 Class!
-public class FastEnemy extends GameObject {
+public class BasicEnemy extends GameObject {
 
 	private Handler handler;
 	
-	public FastEnemy(int x, int y, ID id, Handler handler) {
+	public BasicEnemy(int x, int y, ID id, Handler handler) {
 		super(x, y, id);
 		this.handler = handler;
 		
-		valX = 2; valY = 9;
+		valX = 5; valY = 5;
 	}
 
 	@Override
@@ -28,13 +34,13 @@ public class FastEnemy extends GameObject {
 		if(y <= 0 || y >= Game.HEIGHT - 30 ) valY = -valY;
 		if(x <= 0 || x >= Game.WIDTH - 20 ) valX = -valX; // 실제 프레임의 크기가 정한 완벽한 정수값으로 안떨어짐,, 그래서 애매한 숫자를 사용
 		
-		handler.addObject(new Trail(x, y, ID.Trail, Color.CYAN, 16, 16, 0.02f, handler));
+		handler.addObject(new Trail(x, y, ID.Trail, Color.RED, 16, 16, 0.02f, handler));
 	} // tick()
 
 	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.CYAN);
+		g.setColor(Color.RED);
 		g.fillRect(x, y, 16, 16);
 	} // render()
 

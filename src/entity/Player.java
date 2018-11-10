@@ -1,9 +1,15 @@
-package main;
+package entity;
 
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
+
+import display.HUD;
+import display.Trail;
+import main.Game;
+import main.objecttype.Handler;
+import main.objecttype.ID;
 
 public class Player extends GameObject {
 	

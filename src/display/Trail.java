@@ -1,10 +1,14 @@
-package main;
+package display;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Rectangle;
+
+import entity.GameObject;
+import main.objecttype.Handler;
+import main.objecttype.ID;
 
 // 잔향 남기는 이펙트 object 추가하기! 모든object에 대해 해당하는 Trail obejct를 또 추가하면 됨
 /*

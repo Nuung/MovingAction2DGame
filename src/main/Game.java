@@ -9,6 +9,14 @@ import java.sql.SQLException;
 import java.util.Random;
 
 import database.DBConnection;
+import display.HUD;
+import display.Window;
+import entity.Player;
+import entity.enemy.BasicEnemy;
+import event.KeyInput;
+import event.Spawn;
+import main.objecttype.Handler;
+import main.objecttype.ID;
 
 // main 쓰레드는 여기 있음, static 임!
 public class Game extends Canvas implements Runnable {
@@ -152,6 +160,9 @@ public class Game extends Canvas implements Runnable {
 	
 	public static void main(String args[]) {
 		new Game(); // this object의 생성자를 호출 
+		
+		
+		/* searching DB에서 test set
 		DBConnection connection = new DBConnection();
 		System.out.println("gooname test DB : " + connection.isAdmin("강남구"));
 		ResultSet result = connection.getResultSet("강남구");
@@ -167,7 +178,7 @@ public class Game extends Canvas implements Runnable {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // try - catch
-		
+		*/
 	} // MAIN
 	
 } // Game Class

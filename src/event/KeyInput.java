@@ -1,7 +1,11 @@
-package main;
+package event;
 
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+
+import entity.GameObject;
+import main.objecttype.Handler;
+import main.objecttype.ID;
 
 // key 입력을 통해 object의 무빙을 제어하는 Class
 public class KeyInput extends KeyAdapter {
