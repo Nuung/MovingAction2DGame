@@ -8,6 +8,7 @@ import java.util.Random;
 
 import display.HUD;
 import display.Window;
+import display.assets.Assets;
 import entity.Player;
 import entity.enemy.BasicEnemy;
 import event.KeyInput;
@@ -44,6 +45,7 @@ public class Game extends Canvas implements Runnable {
 	
 	// 생성자
 	public Game() { 
+		Assets.init();
 		// 생성자 내부 오브젝트 이니셜라이징 순서 중요함
 		handler = new Handler();
 		menu = new Menu(this, handler);
@@ -155,8 +157,15 @@ public class Game extends Canvas implements Runnable {
 		// 그래픽적 요소 랜더링을 위한 g, 그 아래는 Graphics class의 기본메소드
 		Graphics g = bs.getDrawGraphics();
 		
-		g.setColor(Color.BLACK);
-		g.fillRect(0, 0, WIDTH, HEIGHT);
+//		g.setColor(Color.BLACK);
+//		g.fillRect(0, 0, WIDTH, HEIGHT);
+		
+		// [ Assets ] tile using test!
+		for(int i = 0; i < WIDTH; i = i + 64) {
+			for(int j = 0; j < HEIGHT; j = j + 64) {
+				g.drawImage(Assets.dirt, i, j, 64, 64, null);
+			} // inner for
+		} // for
 
 		// 순서 중요합니다~
 		handler.render(g); // 하지만 서로 의존적이고 참조 정도가 매우 크다. 순서에 매우 유의하자

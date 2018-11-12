@@ -7,6 +7,7 @@ import java.util.Random;
 
 import display.HUD;
 import display.Trail;
+import display.assets.Assets;
 import main.Game;
 import main.objecttype.Handler;
 import main.objecttype.ID;
@@ -34,7 +35,7 @@ public class Player extends GameObject {
 		x = Game.clamp(x, 0, Game.WIDTH - 37);
 		y = Game.clamp(y, 0, Game.HEIGHT - 60);
 		
-		handler.addObject(new Trail(x, y, ID.Trail, Color.WHITE, 32, 32, 0.08f, handler));
+//		handler.addObject(new Trail(x, y, ID.Trail, Color.WHITE, 32, 32, 0.08f, handler));
 		// 충돌 테스팅 --> with Rectangle!!
 		collision();
 	} // tick()
@@ -42,8 +43,9 @@ public class Player extends GameObject {
 	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.white);
-		g.fillRect(x, y, 32, 32);
+//		g.setColor(Color.white);
+//		g.fillRect(x, y, 32, 32);
+		g.drawImage(Assets.testPlayer, x, y, 32, 32, null);
 	} // render()
 
 	@Override

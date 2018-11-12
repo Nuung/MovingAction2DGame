@@ -50,7 +50,7 @@ public class Trail extends GameObject {
 		// TODO Auto-generated method stub
 		Graphics2D g2d = (Graphics2D) g;
 		
-		// 따라가기 AI com 외형적 구조 구현 / 생성자에서 초기화된 멤버변수 사용함	
+		// 외형적 구조 구현 / 생성자에서 초기화된 멤버변수 사용함	
 		g2d.setComposite(makeTransparnet(alpha));
 		g.setColor(color);
 		g.fillRect(x, y, width, height);
