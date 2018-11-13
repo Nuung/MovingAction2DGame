@@ -29,7 +29,7 @@ public class HUD {
 		greenValue = HEALTH * 2;
 		score = score + 1;
 		
-		// test line
+		/* test line in DB
 		if(HEALTH <= 0) {
 			int result = JOptionPane.showConfirmDialog(null, "You Are DEAD", "Select", JOptionPane.YES_NO_OPTION);
 			if(result == JOptionPane.YES_OPTION) {
@@ -41,6 +41,7 @@ public class HUD {
 				System.exit(0);
 			}
 		} // if
+		*/
 		
 	} // tick()
 	
@@ -74,6 +75,10 @@ public class HUD {
 	
 	public void setLevel(int level) {
 		this.level = level;
+	}
+	
+	public void setScore(int score) {
+		this.score = score;
 	}
 	
 }
