@@ -38,36 +38,36 @@ public class Game extends Canvas implements Runnable {
 	public enum STATE {
 		Menu,
 		Game,
-		Help
+		Help,
+		End;
 	}
 	
-	public STATE gameState = STATE.Menu;
+	public static STATE gameState = STATE.Menu;
 	
 	// 생성자
 	public Game() { 
 		Assets.init();
-		// 생성자 내부 오브젝트 이니셜라이징 순서 중요함
+		// 생성자 내부 오브젝트 이니셜라이징 순서 중요함 / null point error (null object) 를 잡는게 결국 객체 지향에서 기본 도덕
 		handler = new Handler();
-		menu = new Menu(this, handler);
+		hud = new HUD();
+		menu = new Menu(this, handler, hud);
+		
 		this.addKeyListener(new KeyInput(handler)); // 키 액션 리스너 this object(Canvas)에 등록
 		this.addMouseListener(menu); // 마우스 액션
 		
 		new Window(WIDTH, HEIGHT, "GAME", this);
-		
-		// null point error (null object) 를 잡는게 결국 객체 지향에서 기본 도덕
-		hud = new HUD();
 		spawner = new Spawn(handler, hud);
 		r = new Random();
 		
 		// GameState값이 Game일때만
 		if(gameState == STATE.Game) {
 			handler.addObject(new Player(WIDTH/2 - 32, HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
-//			for(int i = 0; i < 5; i++) { // 여러 에너미 생성 예제
 			handler.addObject(new BasicEnemy(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
-//			}
 		} // if
 		else if(gameState == STATE.Menu){
-
+			for(int i = 0; i < 15; i++) {
+				handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MenuParticle, handler));
+			}
 		} // else if ( Menu 상태 )
 		
 	} // Game의 최고 이니셜 라이징
@@ -115,8 +115,12 @@ public class Game extends Canvas implements Runnable {
 				delta --;
 			} // inner while
 			
-			if(running)
-				render();
+			try {
+				if(running) render();
+			} catch(NullPointerException e) {
+				System.out.println("NullPointer Error : " + e.getStackTrace());
+			}
+			
 			frames++;
 			
 			if(System.currentTimeMillis() - timer > 1000) {
@@ -135,13 +139,19 @@ public class Game extends Canvas implements Runnable {
 		if(gameState == STATE.Game) {
 			hud.tick();
 			spawner.tick();
+			
+			if(HUD.HEALTH <= 0) { // 뒤짐
+				HUD.HEALTH = 100;
+				gameState = STATE.End; // 끝난 상태 -> Menu에 End에 따른 랜더링이펙트 차이 필참
+				handler.clearEnemys();
+				for(int i = 0; i < 15; i++) {
+					handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MenuParticle, handler));
+				} // for
+			} // inner if - for die state 'END'
 		} // if
-		else if(gameState == STATE.Menu){
+		else if(gameState == STATE.Menu || gameState == STATE.End){
 			menu.tick();
 		} // else if ( Menu 상태 )
-//		else if(gameState == STATE.Help){
-//			menu.tick();
-//		} // else if ( Menu 상태 )
 	} // tick()
 	
 	private void render() {
@@ -157,24 +167,24 @@ public class Game extends Canvas implements Runnable {
 		// 그래픽적 요소 랜더링을 위한 g, 그 아래는 Graphics class의 기본메소드
 		Graphics g = bs.getDrawGraphics();
 		
-//		g.setColor(Color.BLACK);
-//		g.fillRect(0, 0, WIDTH, HEIGHT);
+		g.setColor(Color.BLACK);
+		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		// [ Assets ] tile using test!
 		for(int i = 0; i < WIDTH; i = i + 64) {
 			for(int j = 0; j < HEIGHT; j = j + 64) {
-				g.drawImage(Assets.dirt, i, j, 64, 64, null);
+				g.drawImage(Assets.backG[j/64], i, j, 64, 64, null);
 			} // inner for
 		} // for
 
-		// 순서 중요합니다~
+		// 순서 중요합니다~ / 계속 에러떠서 그냥 씨팔 게임 스테이터스 if문에 삽입함
 		handler.render(g); // 하지만 서로 의존적이고 참조 정도가 매우 크다. 순서에 매우 유의하자
 		
 		// GameState값이 Game일때만
 		if(gameState == STATE.Game) {
 			hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다 
 		} // if
-		else if(gameState == STATE.Menu || gameState == STATE.Help){
+		else if(gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.End){
 			menu.render(g);
 		} // else if ( Menu 상태 or Help )
 
