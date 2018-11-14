@@ -39,10 +39,13 @@ public class Game extends Canvas implements Runnable {
 		Menu,
 		Game,
 		Help,
+		HyeonSooOne,
+		HyeonSooTwo,
 		End;
 	}
 	
-	public static STATE gameState = STATE.Menu;
+	// 현수 state를 바꾸고 싶으면 여길 건들이면 됨
+	public static STATE gameState = STATE.HyeonSooOne;
 	
 	// 생성자
 	public Game() { 
@@ -152,6 +155,9 @@ public class Game extends Canvas implements Runnable {
 		else if(gameState == STATE.Menu || gameState == STATE.End){
 			menu.tick();
 		} // else if ( Menu 상태 )
+		else if(gameState == STATE.HyeonSooOne || gameState == STATE.HyeonSooOne) {
+			menu.tick();
+		}
 	} // tick()
 	
 	private void render() {
@@ -187,7 +193,10 @@ public class Game extends Canvas implements Runnable {
 		else if(gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.End){
 			menu.render(g);
 		} // else if ( Menu 상태 or Help )
-
+		else if(gameState == STATE.HyeonSooOne || gameState == STATE.HyeonSooOne) {
+			menu.render(g);
+		}
+		
 		g.dispose();
 		bs.show();
 	} // render()

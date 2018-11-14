@@ -147,6 +147,15 @@ public class Menu extends MouseAdapter{
 			g.drawRect(210, 350, 200, 64);	
 			g.drawString("Try Again", 245, 390);
 		} // End State에서 호출 if
+		else if(Game.gameState == STATE.HyeonSooOne) {
+			Font fnt = new Font("arial", 1, 50);
+			g.setFont(fnt);
+			g.setColor(Color.WHITE);
+			g.drawString("GAME OVER", 170, 90);
+		} // HyeonSooOne State에서 호출 if
+		else if(Game.gameState == STATE.HyeonSooTwo) {
+			
+		} //HyeonSooTwo State에서 호출 if
 		
 	} // render()
 } // Menu Class
