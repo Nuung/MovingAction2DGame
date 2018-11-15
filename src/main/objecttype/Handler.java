@@ -16,6 +16,9 @@ public class Handler {
 	// 각 Game object 로 만들어진 palyer, enemy, coin etc 들은 노드로 저장된다
 	public LinkedList<GameObject> object = new LinkedList<GameObject>();
 	
+	// shop에서 speed를 제어하기 위한 번수 -> 적용은 KeyInput에서 됨을 상기
+	public int spd = 5; // speed
+	
 	// 노드형태로 저장된 모든 GameObject에 대한 메소드 접근 구현
 	// 쓰레딩이 된다면, 모든 게임 오브젝트가 다 알아서 ticking, rendering 되도록 구현하기 위해 이런 구조 사용
 	public void tick() {

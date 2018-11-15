@@ -60,7 +60,8 @@ public class Player extends GameObject {
 			// 일단 handler가 가지고 있는 object를 다 돈다, 이새끼가 'Enemy' 일때 충돌을 감지하는 거여~
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Enemy || tempObject.getId() == ID.FastEnemy || 
-					tempObject.getId() == ID.SmartEnemy || tempObject.getId() == ID.EnemyBoss) { 
+					tempObject.getId() == ID.SmartEnemy || tempObject.getId() == ID.EnemyBoss
+					|| tempObject.getId() == ID.HardEnemy ) { 
 				//  intersect는 서로 간섭하는지, 우리가 따로 투명 사각형 (getBounds 메소드를 통해 돌아오는 Rectangle obejct)
 				// 좌표값끼리 점과 점 사이 거리 구해주는 공식을 써서 메소드화 시킬 필요 없이, Rectangle class에
 				// 기본 메소드에 '간섭'에 대한, 여러 점과 점, 거리와 거리를 테스팅 해주는 좋은 메소드가 있다

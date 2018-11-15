@@ -21,7 +21,7 @@ public class EnemyBoss extends GameObject {
 	private int timer2 = 50; // 두번째 액션
 	private int speedtimer = 0; // 두번째 액션 뒤 스피트
 	private int timer3 = 1200;
-	private int timerClear = 100;
+	private int timerClear = 1000;
 	
 	public EnemyBoss(int x, int y, ID id, Handler handler) {
 		super(x, y, id);
@@ -42,6 +42,7 @@ public class EnemyBoss extends GameObject {
 		
 		if(timer <= 0) timer2--; // timer가 0될때까지 멈춰있는 효과
 		
+		// 2번째 패턴
 		if(timer2 <= 0 && timer3 > 0) { // 즉 아래로 등장하고 이제 좌, 우로만 움직임
 			if(valX == 0) valX = 2;
 			// 총알 나가는 액션! ticking 되면서 Bullet이 object로 추가되는 거
@@ -63,27 +64,37 @@ public class EnemyBoss extends GameObject {
 			timer3--;
 		} // if(timer2 <= 0)
 		
+		// 3번째 패턴
 		if(timer3 <= 0) {
 			// timer3가 -로 넘어가면 y축에 벽에 대한 벗어남 (즉 벽에 충돌) 액션 추가 ->  새로운 패턴
 			if(valY == 0) valY = 20;
 			if(y <= 0 || y >= Game.HEIGHT - 96 ) valY = -valY;
 			timerClear--;
+		} // if
+		
+		// 4번째 패턴
+		if(timerClear <= 0) {
+			if(valX != 0) valX = 0; valY = 0;
 		}
-		
-
-		
+				
 		// x축에 벽에 대한 벗어남 (즉 벽에 충돌) 액션 추가
 		if(x <= 0 || x >= Game.WIDTH - 96 ) valX = -valX;
-		
-		
-		handler.addObject(new Trail(x, y, ID.Trail, Color.RED, 96, 96, 0.088888f, handler)); // 꼬리
+		if(timerClear > 0) {
+			handler.addObject(new Trail(x, y, ID.Trail, Color.RED, 96, 96, 0.088888f, handler)); // 꼬리
+		}
+			
 	} // tick()
 
 	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-		g.setColor(Color.RED);		
-		g.fillRect(x, y, 96, 96);		
+		if(timerClear <= 0) {
+			g.setColor(Color.ORANGE);
+			g.fillRect(x, y, Game.WIDTH/2, Game.HEIGHT/2);
+		} else {
+			g.setColor(Color.RED);		
+			g.fillRect(x, y, 96, 96);
+		}
 	} // render()
 
 	@Override

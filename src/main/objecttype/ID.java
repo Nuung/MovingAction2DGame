@@ -9,6 +9,7 @@ public enum ID {
 	Enemy(), // 기본적인 적군 지정
 	FastEnemy(), // 빠른 적군
 	SmartEnemy(), // AI
+	HardEnemy(),
 	EnemyBoss(),
 	Trail(),  // tracing, 따라가는 잔향 이펙터
 	MenuParticle();

@@ -4,6 +4,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import entity.GameObject;
+import main.Game;
+import main.Game.STATE;
 import main.objecttype.Handler;
 import main.objecttype.ID;
 
@@ -14,8 +16,12 @@ public class KeyInput extends KeyAdapter {
 	private Handler handler;
 	private boolean[] keyDown = new boolean[4]; // key입력이 처먹어들어가는 경우때문에 일반 입력에서 배열형 논리로 바꿈
 	
+	// for detact game state!
+	private Game game;
+	
 	// 생성자
-	public  KeyInput(Handler handler) {
+	public  KeyInput(Handler handler, Game game) {
+		this.game = game;
 		this.handler = handler;  // 추후 동작을 위해 handler 객체 가지고 있기
 		for(int i = 0; i < 4; i ++) {
 			this.keyDown[i] = false; 
@@ -32,14 +38,28 @@ public class KeyInput extends KeyAdapter {
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Player) {
 				// KeyEvent Class는 키보드의 특정 키 값을 변수형식으로 가지고 있음
-				if(key == KeyEvent.VK_W) { tempObject.setValY(-5); keyDown[0] = true; }
-				if(key == KeyEvent.VK_S) { tempObject.setValY(5);  keyDown[1] = true; }
-				if(key == KeyEvent.VK_A) { tempObject.setValX(-5); keyDown[2] = true; }
-				if(key == KeyEvent.VK_D) { tempObject.setValX(5); keyDown[3] = true; }
+				if(key == KeyEvent.VK_W) { tempObject.setValY(-handler.spd); keyDown[0] = true; }
+				if(key == KeyEvent.VK_S) { tempObject.setValY(handler.spd);  keyDown[1] = true; }
+				if(key == KeyEvent.VK_A) { tempObject.setValX(-handler.spd); keyDown[2] = true; }
+				if(key == KeyEvent.VK_D) { tempObject.setValX(handler.spd); keyDown[3] = true; }
 			} // if
 		} // for
 		
+		// for stop button ( 'p' 키 )
+		if(key == KeyEvent.VK_P) { // 설계는 간단하다 p 누를때마다 static 변수의 논리값이 바뀐다
+			if(game.gameState == STATE.Game) {
+				if(Game.paused) Game.paused = false;
+				else Game.paused = true;
+			}
+		}
+		
 		if(key == KeyEvent.VK_ESCAPE) System.exit(1); // ESC 키 누르면 걍 게임꺼지게 
+		
+		// for entering to shop (State)
+		if(key == KeyEvent.VK_SPACE) {
+			if(Game.gameState == STATE.Game) Game.gameState = STATE.Shop;
+			else if(Game.gameState == STATE.Shop) Game.gameState = STATE.Game;
+		}
 		
 	} // keyPressed()
 	
