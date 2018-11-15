@@ -10,18 +10,21 @@ import java.util.Random;
 import display.HUD;
 import entity.Player;
 import entity.enemy.BasicEnemy;
+import entity.enemy.HardEnemy;
 import main.Game.STATE;
 import main.objecttype.Handler;
 import main.objecttype.ID;
 
 public class Menu extends MouseAdapter{
 
+	private Game game;
 	private Handler handler;
 	private HUD hud; // for score
 	private Random r = new Random();
 	private int centerYPos;
 	
 	public Menu(Game game, Handler handler, HUD hud) {
+		this.game = game;
 		this.handler = handler;
 		this.hud = hud;
 		this.centerYPos = Game.HEIGHT / 2;
@@ -34,10 +37,12 @@ public class Menu extends MouseAdapter{
 		if(Game.gameState == STATE.Menu) {
 			// 'PLAY' 가 적힌 Rectangle 구역
 			if(moveOver(mx, my, 210, 150, 200, 64)) {
-				Game.gameState = STATE.Game;
-				handler.addObject(new Player(Game.WIDTH/2 - 32, Game.HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
-				handler.clearEnemys(); // Player 제외한 메뉴 이펙트로 넣은 새끼들 모두 제거
-				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
+//				Game.gameState = STATE.Game;
+//				handler.addObject(new Player(Game.WIDTH/2 - 32, Game.HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
+//				handler.clearEnemys(); // Player 제외한 메뉴 이펙트로 넣은 새끼들 모두 제거
+//				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
+				Game.gameState = STATE.Select;
+				return;
 			} // inner if
 			
 			// 'HELP' 가 적힌 Rectangle 구역
@@ -52,6 +57,33 @@ public class Menu extends MouseAdapter{
 			} // inner if
 		} // Menu if
 		
+		if(Game.gameState == STATE.Select) {
+			// 'Normal' 적힌 Rectangle 구역
+			if(moveOver(mx, my, 210, 150, 200, 64)) {
+				Game.gameState = STATE.Game;
+				handler.addObject(new Player(Game.WIDTH/2 - 32, Game.HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
+				handler.clearEnemys(); // Player 제외한 메뉴 이펙트로 넣은 새끼들 모두 제거
+				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
+				game.diff = 1;
+			} // inner if
+			
+			// 'Hard' 가 적힌 Rectangle 구역
+			if(moveOver(mx, my, 210, 250, 200, 64)) {
+				Game.gameState = STATE.Game;
+				handler.addObject(new Player(Game.WIDTH/2 - 32, Game.HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
+				handler.clearEnemys(); // Player 제외한 메뉴 이펙트로 넣은 새끼들 모두 제거
+				handler.addObject(new HardEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.HardEnemy, handler)); // 기본 Red색 Enemy object 추가
+				handler.addObject(new HardEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.HardEnemy, handler)); // 기본 Red색 Enemy object 추가
+				game.diff = 2;
+			} // inner if
+			
+			// 'Back' 이 적힌 Rectangle 구역
+			if(moveOver(mx, my, 210, 350, 200, 64)) {
+				Game.gameState = STATE.Menu;
+				return;
+			} // inner if
+		} // Menu if
+		
 		// BackButton for help / 'BACK' 이 적힌 Rectangle 구역
 		if(Game.gameState == STATE.Help) {
 			if(moveOver(mx, my, 210, 350, 200, 64)) {
@@ -62,19 +94,17 @@ public class Menu extends MouseAdapter{
 		
 		// TrayAgain Button for End / 'Try Again' 이 적힌 Rectangle 구역
 		if(Game.gameState == STATE.End) {
-			if(moveOver(mx, my, 210, 350, 200, 64)) {
-				Game.gameState = STATE.Game;
+			if(moveOver(mx, my, 210, 350, 200, 64)) { // Try Again
+				Game.gameState = STATE.Menu;
 				hud.setLevel(1); hud.setScore(0);
-				handler.addObject(new Player(Game.WIDTH/2 - 32, Game.HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
-				handler.clearEnemys(); // Player 제외한 메뉴 이펙트로 넣은 새끼들 모두 제거
-				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
 			} // inner if
 		} // Help if
 		
 	} // mousePressed()
 	
 	public void mouseReleased(MouseEvent e) {
-	}
+		
+	} // mouseReleased()
 	
 	// mx, my값이 우리가 지정한 특정 지역의 위 아래 범위 내라면 -> 버튼 처럼 액션을 준다
 	private boolean moveOver(int mx, int my, int x, int y, int width, int height) {
@@ -147,15 +177,26 @@ public class Menu extends MouseAdapter{
 			g.drawRect(210, 350, 200, 64);	
 			g.drawString("Try Again", 245, 390);
 		} // End State에서 호출 if
-		else if(Game.gameState == STATE.HyeonSooOne) {
+		if(Game.gameState == STATE.Select) {
 			Font fnt = new Font("arial", 1, 50);
+			Font fnt2 = new Font("arial", 1, 30);
+			
+			// About menu String and Button shape Rectangle
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
-			g.drawString("GAME OVER", 170, 90);
-		} // HyeonSooOne State에서 호출 if
-		else if(Game.gameState == STATE.HyeonSooTwo) {
+			g.drawString("Select Difficulty", 120, 90);
 			
-		} //HyeonSooTwo State에서 호출 if
+			g.setFont(fnt2);
+			g.setColor(Color.WHITE);
+			g.drawRect(210, 150, 200, 64);
+			g.drawString("Normal", 270, 190);
+			
+			g.drawRect(210, 250, 200, 64);	
+			g.drawString("Hard", 270, 290);
+
+			g.drawRect(210, 350, 200, 64);
+			g.drawString("Back", 270, 390);
+		} // Menu State에서 호출 if
 		
 	} // render()
 } // Menu Class

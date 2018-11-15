@@ -6,6 +6,7 @@ import display.HUD;
 import entity.enemy.BasicEnemy;
 import entity.enemy.EnemyBoss;
 import entity.enemy.FastEnemy;
+import entity.enemy.HardEnemy;
 import entity.enemy.SmartEnemy;
 import main.Game;
 import main.objecttype.Handler;
@@ -15,6 +16,7 @@ import main.objecttype.ID;
 // 조건이라면 'score --> level system' 을 통해서, 상위로 간다면, enemy를 spawn한다는 액션이 된다
 public class Spawn {
 
+	private Game game;
 	private Handler handler;
 	private HUD hud;
 	private Random r = new Random(); // spawn할때 위치 랜덤 위해
@@ -22,7 +24,8 @@ public class Spawn {
 	// Score, lv 탐색 syste 위한 meber val
 	private int scoreKeep = 0;
 	
-	public Spawn(Handler handler, HUD hud) {
+	public Spawn(Game game, Handler handler, HUD hud) {
+		this.game = game;
 		this.handler = handler;
 		this.hud = hud;
 	} // 생성자
@@ -30,30 +33,64 @@ public class Spawn {
 	public void tick() {
 		scoreKeep++;
 		
-		if(scoreKeep >= 100) { // 점수가 1천점 넘으면
+		if(scoreKeep >= 250) { // 점수가 1천점 넘으면
 			this.scoreKeep = 0; // 점수 초기화 ( 임시 저장 변수 )
 			// 현재 level 에서 +1 한 레벨로 
 			hud.setLevel(hud.getLevel() + 1);
-			// level에 따라 handler에 적 오브젝트 추가하자!
-			if(hud.getLevel() == 2) {
-				// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
-				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
-			} else if(hud.getLevel() == 3) {
-				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
-			} else if(hud.getLevel() == 4) {
-				handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
-			} else if(hud.getLevel() == 5) {
-				handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
-			} else if(hud.getLevel() == 6) {
-				handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
-				handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler));
-			}else if(hud.getLevel() == 10) {
-				handler.clearEnemys();
-				handler.addObject(new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler));
-			}
 			
-			// inner if ~ else
+			// 게임 난이도에 따른 진행이 다른 spawn
+			if(game.diff == 1) {
+				inNormal(hud.getLevel());
+			} 
+			else if(game.diff == 2) {
+				inHard(hud.getLevel());
+			}			
+			
 		} // if
 	} // tick()
+	
+	public void inNormal(int level) {
+		// level에 따라 handler에 적 오브젝트 추가하자!
+		if(level == 2) {
+			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
+			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+		} else if(level == 3) {
+			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+		} else if(level == 4) {
+			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
+		} else if(level == 5) {
+			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
+		} else if(level == 6) {
+			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
+			handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler));
+		}else if(level == 10) {
+			handler.clearEnemys();
+			handler.addObject(new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler));
+		}
+	} // inNormal()
+	
+	public void inHard(int level) {
+		// level에 따라 handler에 적 오브젝트 추가하자!
+		if(level == 2) {
+			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
+			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+		} else if(level == 3) {
+			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+		} else if(level == 4) {
+			handler.addObject(new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.HardEnemy, handler));
+			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
+		} else if(level == 5) {
+			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
+		} else if(level == 6) {
+			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
+			handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler));
+		} else if(level == 7) {
+			handler.addObject(new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.HardEnemy, handler));
+		} else if(level == 10) {
+			handler.clearEnemys();
+			handler.addObject(new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler));
+			handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler));
+		}
+	} // inHard
 	
 }

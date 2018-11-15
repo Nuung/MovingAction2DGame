@@ -15,6 +15,7 @@ import event.KeyInput;
 import event.Spawn;
 import main.objecttype.Handler;
 import main.objecttype.ID;
+import main.status.Shop;
 
 // main 쓰레드는 여기 있음, static 임!
 public class Game extends Canvas implements Runnable {
@@ -26,6 +27,9 @@ public class Game extends Canvas implements Runnable {
 	private Thread thread;
 	private boolean running = false; // thread 프로세싱의 처리위한 논리변수
 	
+	// Game stop의 effect 추가하기 위한 불변수
+	public static boolean paused = false;
+	public int diff = 0; // 1 - normal / 2 - hard
 	private Random r; // 난수 생성 object, enemy의 moving 액션을 난수화 하기 위해서 사용
 	
 	// 모든 게임 오브젝트, 링크드 리스트 -> 티킹, 랜더링
@@ -33,19 +37,20 @@ public class Game extends Canvas implements Runnable {
 	private HUD hud;
 	private Spawn spawner;
 	private Menu menu; // 메뉴 state!
+	private Shop shop; // shop state!
 	
 	// 게임 메뉴를 위한 열거형 데이터 추가
 	public enum STATE {
 		Menu,
+		Select,
 		Game,
 		Help,
-		HyeonSooOne,
-		HyeonSooTwo,
+		Shop,
 		End;
 	}
 	
 	// 현수 state를 바꾸고 싶으면 여길 건들이면 됨
-	public static STATE gameState = STATE.HyeonSooOne;
+	public static STATE gameState = STATE.Menu;
 	
 	// 생성자
 	public Game() { 
@@ -53,13 +58,15 @@ public class Game extends Canvas implements Runnable {
 		// 생성자 내부 오브젝트 이니셜라이징 순서 중요함 / null point error (null object) 를 잡는게 결국 객체 지향에서 기본 도덕
 		handler = new Handler();
 		hud = new HUD();
+		shop = new Shop(handler, hud);
 		menu = new Menu(this, handler, hud);
 		
-		this.addKeyListener(new KeyInput(handler)); // 키 액션 리스너 this object(Canvas)에 등록
+		this.addKeyListener(new KeyInput(handler, this)); // 키 액션 리스너 this object(Canvas)에 등록
 		this.addMouseListener(menu); // 마우스 액션
+		this.addMouseListener(shop); // 마우스 액션
 		
 		new Window(WIDTH, HEIGHT, "GAME", this);
-		spawner = new Spawn(handler, hud);
+		spawner = new Spawn(this, handler, hud);
 		r = new Random();
 		
 		// GameState값이 Game일때만
@@ -114,7 +121,11 @@ public class Game extends Canvas implements Runnable {
 			delta += (now - lastTime) / ns;
 			lastTime = now;
 			while(delta >= 1) {
-				tick();
+				try {
+					tick();
+				} catch(NullPointerException e) {
+					System.out.println("NullPointer Error : " + e.getStackTrace());
+				}
 				delta --;
 			} // inner while
 			
@@ -136,28 +147,30 @@ public class Game extends Canvas implements Runnable {
 	} // run()
 	
 	private void tick() {
-		handler.tick();
 		
 		// GameState값이 Game일때만
 		if(gameState == STATE.Game) {
-			hud.tick();
-			spawner.tick();
-			
-			if(HUD.HEALTH <= 0) { // 뒤짐
-				HUD.HEALTH = 100;
-				gameState = STATE.End; // 끝난 상태 -> Menu에 End에 따른 랜더링이펙트 차이 필참
-				handler.clearEnemys();
-				for(int i = 0; i < 15; i++) {
-					handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MenuParticle, handler));
-				} // for
-			} // inner if - for die state 'END'
+			// paused 상태가 false 일때만, 게임이 ticking (진행) 됨
+			if(!paused) {
+				handler.tick(); // 상태별 ticking 과 제대로된 pause를 위해 안으로 옮김
+				hud.tick();
+				spawner.tick();
+				
+				if(HUD.HEALTH <= 0) { // 뒤짐
+					HUD.HEALTH = 100;
+					gameState = STATE.End; // 끝난 상태 -> Menu에 End에 따른 랜더링이펙트 차이 필참
+					handler.clearEnemys();
+					for(int i = 0; i < 15; i++) {
+						handler.addObject(new MenuParticle(r.nextInt(WIDTH), r.nextInt(HEIGHT), ID.MenuParticle, handler));
+					} // for
+				} // most inner if - for die state 'END'
+			} // inner if - for paused
 		} // if
-		else if(gameState == STATE.Menu || gameState == STATE.End){
+		else if(gameState == STATE.Menu || gameState == STATE.End || gameState == STATE.Select){
+			handler.tick(); // 상태별 ticking 과 제대로된 pause를 위해 안으로 옮김
 			menu.tick();
 		} // else if ( Menu 상태 )
-		else if(gameState == STATE.HyeonSooOne || gameState == STATE.HyeonSooOne) {
-			menu.tick();
-		}
+
 	} // tick()
 	
 	private void render() {
@@ -183,19 +196,27 @@ public class Game extends Canvas implements Runnable {
 			} // inner for
 		} // for
 
-		// 순서 중요합니다~ / 계속 에러떠서 그냥 씨팔 게임 스테이터스 if문에 삽입함
-		handler.render(g); // 하지만 서로 의존적이고 참조 정도가 매우 크다. 순서에 매우 유의하자
+		// 순서 중요합니다~ 
+		//	handler.render(g); // 하지만 서로 의존적이고 참조 정도가 매우 크다. 순서에 매우 유의하자
+		
+		if(paused) {
+			g.setColor(Color.WHITE);
+			g.drawString("PASUED", 100, 100);
+		}
 		
 		// GameState값이 Game일때만
 		if(gameState == STATE.Game) {
+			handler.render(g);
 			hud.render(g); // 얘는 정적인 object가 아니라 player에 종속되는 class라는 개념으로, handler가 제어하지 않는다 
 		} // if
-		else if(gameState == STATE.Menu || gameState == STATE.Help || gameState == STATE.End){
+		else if(gameState == STATE.Shop) {
+			shop.render(g);
+		}
+		else if(gameState == STATE.Menu || gameState == STATE.Help || 
+				gameState == STATE.End || gameState == STATE.Select){
+			handler.render(g);
 			menu.render(g);
 		} // else if ( Menu 상태 or Help )
-		else if(gameState == STATE.HyeonSooOne || gameState == STATE.HyeonSooOne) {
-			menu.render(g);
-		}
 		
 		g.dispose();
 		bs.show();
