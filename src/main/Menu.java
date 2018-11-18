@@ -7,7 +7,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Random;
 
+import javax.swing.JOptionPane;
+
+import database.DBConnection;
 import display.HUD;
+import display.assets.Assets;
 import entity.Player;
 import entity.enemy.BasicEnemy;
 import entity.enemy.HardEnemy;
@@ -37,18 +41,13 @@ public class Menu extends MouseAdapter{
 		if(Game.gameState == STATE.Menu) {
 			// 'PLAY' 가 적힌 Rectangle 구역
 			if(moveOver(mx, my, 210, 150, 200, 64)) {
-//				Game.gameState = STATE.Game;
-//				handler.addObject(new Player(Game.WIDTH/2 - 32, Game.HEIGHT/2 - 32, ID.Player, handler)); // player object 추가, 위치는 정 가운데
-//				handler.clearEnemys(); // Player 제외한 메뉴 이펙트로 넣은 새끼들 모두 제거
-//				handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH), r.nextInt(Game.HEIGHT), ID.Enemy, handler)); // 기본 Red색 Enemy object 추가
 				Game.gameState = STATE.Select;
 				return;
 			} // inner if
 			
-			// 'HELP' 가 적힌 Rectangle 구역
+			// 'Leaderboard' 가 적힌 Rectangle 구역
 			if(moveOver(mx, my, 210, 250, 200, 64)) {
-				Game.gameState = STATE.Help;
-				System.out.println("HELP");
+				Game.gameState = STATE.Leaderboard;
 			} // inner if
 			
 			// 'QUIT' 이 적힌 Rectangle 구역
@@ -84,8 +83,8 @@ public class Menu extends MouseAdapter{
 			} // inner if
 		} // Menu if
 		
-		// BackButton for help / 'BACK' 이 적힌 Rectangle 구역
-		if(Game.gameState == STATE.Help) {
+		// BackButton for Leaderboard / 'BACK' 이 적힌 Rectangle 구역
+		if(Game.gameState == STATE.Leaderboard) {
 			if(moveOver(mx, my, 210, 350, 200, 64)) {
 				Game.gameState = STATE.Menu;
 				return;
@@ -94,9 +93,21 @@ public class Menu extends MouseAdapter{
 		
 		// TrayAgain Button for End / 'Try Again' 이 적힌 Rectangle 구역
 		if(Game.gameState == STATE.End) {
-			if(moveOver(mx, my, 210, 350, 200, 64)) { // Try Again
+			
+			if(moveOver(mx, my, 120, 350, 166, 64)) { // Try Again
 				Game.gameState = STATE.Menu;
 				hud.setLevel(1); hud.setScore(0);
+			} // inner if
+			
+			if(moveOver(mx, my, 286, 350, 166, 64)) { // Up load the score to DB
+				DBConnection dbScore = new DBConnection();
+				try {
+					dbScore.InsertScore(hud.getScore());
+				} catch(Exception e1) {
+					System.out.println(" DB Inserting error (in Menu Class) : " + e1.getMessage());
+				} // try - catch
+				JOptionPane.showMessageDialog(null, "스코어가 정상적으로 업로드 됐습니다.");
+				Game.DBsetting(); // 새로운 Score값이 추가됐으니 리더보드 값이 변경됨 -> DBsetting 다시
 			} // inner if
 		} // Help if
 		
@@ -140,26 +151,41 @@ public class Menu extends MouseAdapter{
 			g.drawString("PLAY", 270, 190);
 			
 			g.drawRect(210, 250, 200, 64);	
-			g.drawString("HELP", 270, 290);
+			g.drawString("Leaderboard", 220, 292);
 
 			g.drawRect(210, 350, 200, 64);
 			g.drawString("QUIT", 270, 390);
 		} // Menu State에서 호출 if
-		else if(Game.gameState == STATE.Help) {
+		else if(Game.gameState == STATE.Leaderboard) {
 			Font fnt = new Font("arial", 1, 50);
 			Font fnt2 = new Font("arial", 1, 30);
 			Font fnt3 = new Font("arial", 1, 15);
 			
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
-			g.drawString("HELP", 240, 90);
+			g.drawString("Leaderboard", 160, 90);
 			
 			g.setFont(fnt3);
-			g.drawString("Use WASD keys to move playerd and dodge enemies. Made By Nuung", 65, centerYPos);
+			g.drawString("Use WASD keys to move playerd and dodge enemies. Made By Nuung", 65, centerYPos-120);
 			
 			g.setFont(fnt2);
 			g.drawRect(210, 350, 200, 64);	
 			g.drawString("BACK", 270, 390);
+			
+			// icon rendering
+			g.drawImage(Assets.leaderButton, 100, 130, 80, 80, null);
+			
+			g.drawRect(210, 140, 340, 64);	
+			g.drawString(Game.leaderBoard.get(0), 220, 182);
+			g.drawRect(210, 204, 340, 64);	
+			g.drawString(Game.leaderBoard.get(1), 220, 247);
+			g.drawRect(210, 268, 340, 64);	
+			g.drawString(Game.leaderBoard.get(2), 220, 310);
+			
+			g.setFont(fnt3);
+			g.drawString("My Best Score", 80, 240);
+			g.drawString(": "+Game.mybestBoard, 80, 260);
+			
 		} // Help State에서 호출 if
 		else if(Game.gameState == STATE.End) {
 			Font fnt = new Font("arial", 1, 50);
@@ -174,8 +200,12 @@ public class Menu extends MouseAdapter{
 			g.drawString("You lost with a score of : " + hud.getScore(), 200, centerYPos);
 			
 			g.setFont(fnt2);
-			g.drawRect(210, 350, 200, 64);	
-			g.drawString("Try Again", 245, 390);
+			g.drawRect(120, 350, 166, 64);	
+			g.drawString("Try Again", 135, 390);
+			
+			g.setFont(fnt2);
+			g.drawRect(286, 350, 245, 64);	
+			g.drawString("Save the Score", 301, 390);
 		} // End State에서 호출 if
 		if(Game.gameState == STATE.Select) {
 			Font fnt = new Font("arial", 1, 50);

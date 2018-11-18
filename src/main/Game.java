@@ -4,8 +4,12 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Random;
 
+import database.DBConnection;
 import display.HUD;
 import display.Window;
 import display.assets.Assets;
@@ -22,6 +26,8 @@ public class Game extends Canvas implements Runnable {
 	
 	private static final long serialVersionUID = 6691247796639148462L;
 	public static final int WIDTH = 640, HEIGHT = WIDTH / 12 * 9; // 높이는 넓이에 상대적으로 비례하도록 지정 1대 9/12 비율
+	public static ArrayList<String> leaderBoard = new ArrayList<String>(); // 리더보드 결과값 저장. 효과적으로 하기 위해 list자료구조 사용
+	public static String mybestBoard = ""; // 리더보드에 나의 최고점 저장. name값 기준으로 일단. (login구현 후)
 	
 	// thread 처리의 기본 멤버 변수
 	private Thread thread;
@@ -44,7 +50,7 @@ public class Game extends Canvas implements Runnable {
 		Menu,
 		Select,
 		Game,
-		Help,
+		Leaderboard,
 		Shop,
 		End;
 	}
@@ -166,7 +172,8 @@ public class Game extends Canvas implements Runnable {
 				} // most inner if - for die state 'END'
 			} // inner if - for paused
 		} // if
-		else if(gameState == STATE.Menu || gameState == STATE.End || gameState == STATE.Select){
+		else if(gameState == STATE.Menu || gameState == STATE.End 
+				|| gameState == STATE.Leaderboard || gameState == STATE.Select){
 			handler.tick(); // 상태별 ticking 과 제대로된 pause를 위해 안으로 옮김
 			menu.tick();
 		} // else if ( Menu 상태 )
@@ -212,11 +219,11 @@ public class Game extends Canvas implements Runnable {
 		else if(gameState == STATE.Shop) {
 			shop.render(g);
 		}
-		else if(gameState == STATE.Menu || gameState == STATE.Help || 
+		else if(gameState == STATE.Menu || gameState == STATE.Leaderboard || 
 				gameState == STATE.End || gameState == STATE.Select){
 			handler.render(g);
 			menu.render(g);
-		} // else if ( Menu 상태 or Help )
+		} // else if ( Menu 상태 or etc )
 		
 		g.dispose();
 		bs.show();
@@ -236,26 +243,38 @@ public class Game extends Canvas implements Runnable {
 		
 	} // clamp()
 	
-	public static void main(String args[]) {
-		new Game(); // this object의 생성자를 호출 
-		
-		/* searching DB에서 test set
+	public static void DBsetting() {
+		leaderBoard.clear();
+		mybestBoard = "";
+		// 리더보드 가져오기 DB / 백엔드 부분
 		DBConnection connection = new DBConnection();
-		System.out.println("gooname test DB : " + connection.isAdmin("강남구"));
-		ResultSet result = connection.getResultSet("강남구");
 		
+		// 모두 가져오기 
+		ResultSet resultAll = connection.getLeaderBoard();
 		try {
 			do { // next하면 포인트가 다음을 다르킨다 생각하자
-				String name = result.getString("name");
-				String gooname = result.getString("gooname");
-				String dongname = result.getString("dongname");
-				System.out.println(name + ", " + gooname + ", " + dongname);
-			} while(result.next()); // do - while : 첫번째 결과 row값도 실행하기 위해
+				String name = resultAll.getString("name");
+				String score = resultAll.getString("score");
+				System.out.println(name+", "+score);
+				leaderBoard.add(name + ": " + score);
+			} while(resultAll.next()); // do - while : 첫번째 결과 row값도 실행하기 위해
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} // try - catch
-		*/
+		
+		// Login 구현 이후, 'name'값 기준으로 모두 가져오기
+		ResultSet resultMy = connection.getMyLeaderBoard("HyeonWoo");
+		try {
+			mybestBoard = resultMy.getString("score");
+			System.out.println(mybestBoard);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void main(String args[]) {
+		new Game(); // this object의 생성자를 호출 
+		DBsetting();
 	} // MAIN
 	
 } // Game Class
