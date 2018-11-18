@@ -32,20 +32,6 @@ public class HUD {
 		greenValue = Game.clamp(greenValue, 0, 255); // 위와 목적 동일, 범위 벗어나지 못하게 --> 가볍게 에러 방지 가능
 		score = score + 1;
 		
-		/* test line in DB
-		if(HEALTH <= 0) {
-			int result = JOptionPane.showConfirmDialog(null, "You Are DEAD", "Select", JOptionPane.YES_NO_OPTION);
-			if(result == JOptionPane.YES_OPTION) {
-				DBConnection dbScore = new DBConnection();
-				dbScore.InsertScore(this.score);
-				System.exit(0);
-			} // inner if
-			else {
-				System.exit(0);
-			}
-		} // if
-		*/
-		
 	} // tick()
 	
 	public void render(Graphics g) {

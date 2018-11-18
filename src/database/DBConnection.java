@@ -77,5 +77,30 @@ public class DBConnection {
 		} // try - catch
 	} // InsertScore()
 	
+	public ResultSet getLeaderBoard() {
+		try {
+			String SQL = "SELECT * FROM `gamescore` ORDER BY `score` DESC";
+			rs = st.executeQuery(SQL); // rs가 SQL 구문의 결과 행 값들을 가지게 된다.
+			if(rs.next()) { // SQL구문의 결과값이 존재한다면
+				return rs;
+			} // if
+		} catch(Exception e) {
+			System.out.println(" DB searching error (in SQL 구문) : " + e.getMessage());
+		} // try - catch
+		return rs;
+	}
+	
+	public ResultSet getMyLeaderBoard(String name) {
+		try {
+			String SQL = "SELECT * FROM `gamescore` WHERE `name` = '"+ name +"' ORDER BY `score` DESC";
+			rs = st.executeQuery(SQL); // rs가 SQL 구문의 결과 행 값들을 가지게 된다.
+			if(rs.next()) { // SQL구문의 결과값이 존재한다면
+				return rs;
+			} // if
+		} catch(Exception e) {
+			System.out.println(" DB searching error (in SQL 구문) : " + e.getMessage());
+		} // try - catch
+		return rs;
+	}
 	
 } // DBConnection Class

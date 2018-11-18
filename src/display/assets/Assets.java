@@ -7,7 +7,8 @@ public class Assets {
 	// 한 타일의 좌 우 크기
 	private static final int width = 64, height = 64;
 	
-	public static BufferedImage testPlayer; // Tile, map Static entities
+	// Tile, map Static entities
+	public static BufferedImage leaderButton; 
 	public static BufferedImage backG[];
 	public static BufferedImage[] player_up, player_down, player_left, player_right;
 	
@@ -17,6 +18,9 @@ public class Assets {
 		// Moving2DTileGame\res\textures 의 절대 경로 잊지 말기~
 		SpriteSheet playersheet = new SpriteSheet(ImageLoader.loadImage("/textures/gaja.png"));
 		SpriteSheet sheet = new SpriteSheet(ImageLoader.loadImage("/textures/starbackground.png"));
+		SpriteSheet leaderboard = new SpriteSheet(ImageLoader.loadImage("/textures/leaderboard.png"));
+		
+		leaderButton = leaderboard.crop(0, 0, 1600, 1600);
 		
 		//─────────────────────Player Animation Set!─────────────────────//
 		player_up = new BufferedImage[4];

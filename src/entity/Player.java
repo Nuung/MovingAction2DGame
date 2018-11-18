@@ -75,7 +75,7 @@ public class Player extends GameObject {
 	public void collision() {
 		
 		for(int i = 0; i < handler.object.size(); i++) {
-			// 일단 handler가 가지고 있는 object를 다 돈다, 이새끼가 'Enemy' 일때 충돌을 감지하는 거여~
+			// 일단 handler가 가지고 있는 object를 다 돈다, 이 'Enemy' 일때 충돌을 감지하는 거여~
 			GameObject tempObject = handler.object.get(i);
 			if(tempObject.getId() == ID.Enemy || tempObject.getId() == ID.FastEnemy || 
 					tempObject.getId() == ID.SmartEnemy || tempObject.getId() == ID.EnemyBoss
