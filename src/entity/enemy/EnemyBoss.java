@@ -90,7 +90,7 @@ public class EnemyBoss extends GameObject {
 		// TODO Auto-generated method stub
 		if(timerClear <= 0) {
 			g.setColor(Color.ORANGE);
-			g.fillRect(x, y, Game.WIDTH/2, Game.HEIGHT/2);
+			g.fillRect(Game.WIDTH/2, Game.HEIGHT/2, 96, 96);
 		} else {
 			g.setColor(Color.RED);		
 			g.fillRect(x, y, 96, 96);
