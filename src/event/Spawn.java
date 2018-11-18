@@ -38,6 +38,10 @@ public class Spawn {
 			// 현재 level 에서 +1 한 레벨로 
 			hud.setLevel(hud.getLevel() + 1);
 			
+			if(hud.getLevel() >= 15) {
+				hud.setLevel(1);
+			}
+			
 			// 게임 난이도에 따른 진행이 다른 spawn
 			if(game.diff == 1) {
 				inNormal(hud.getLevel());

@@ -3,6 +3,7 @@ package entity;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
+import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import display.HUD;
@@ -14,15 +15,26 @@ import main.objecttype.ID;
 
 public class Player extends GameObject {
 	
-	Random r = new Random();
-	Handler handler;
+	// Animation
+	private Animation animDown, animUp, animLeft, animRight;
+	// Attack timer
+//	private long lastAttackTimer, attackCooldown = 400, attackTimer = attackCooldown;
 	
+	private Random r = new Random();
+	private Handler handler;
+
 	// 생성자
 	public Player(int x, int y, ID id, Handler handler) {
 		// super class의 member val --> player 최초 세팅
 		// super's member's val 변수는 Game에서 Speed에 입각한 개념
 		super(x, y, id); // 위치, 열거형 값 ( Know what kind of object )
 		this.handler = handler;
+		
+		// Animations Values...
+		animDown = new Animation(100, Assets.player_down);
+		animUp = new Animation(100, Assets.player_up);
+		animLeft = new Animation(100, Assets.player_left);
+		animRight = new Animation(100, Assets.player_right);
 	}
 
 	@Override
@@ -31,27 +43,33 @@ public class Player extends GameObject {
 		x += valX;
 		y += valY;
 		
+		// Animations
+		animDown.tick();
+		animUp.tick();
+		animLeft.tick();
+		animRight.tick();
+		
 		// frame 창 벗어나지 못하게
 		x = Game.clamp(x, 0, Game.WIDTH - 37);
-		y = Game.clamp(y, 0, Game.HEIGHT - 60);
+		y = Game.clamp(y, 0, Game.HEIGHT - 75);
 		
 //		handler.addObject(new Trail(x, y, ID.Trail, Color.WHITE, 32, 32, 0.08f, handler));
 		// 충돌 테스팅 --> with Rectangle!!
 		collision();
+		
+
 	} // tick()
 
 	@Override
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
-//		g.setColor(Color.white);
-//		g.fillRect(x, y, 32, 32);
-		g.drawImage(Assets.testPlayer, x, y, 32, 32, null);
+		g.drawImage(getCurrentAnimationFrame(), x, y, 44, 44, null);
 	} // render()
 
 	@Override
 	public Rectangle getBounds() {
 		// TODO Auto-generated method stub
-		return new Rectangle(x, y, 32, 32);
+		return new Rectangle(x, y, 42, 42);
 	} // getBounds()
 	
 	public void collision() {
@@ -73,5 +91,17 @@ public class Player extends GameObject {
 		} // for
 		
 	} // collision()
+	
+	private BufferedImage getCurrentAnimationFrame() {
+		if(this.valX < 0) {
+			return animLeft.getCurrentFrame();
+		}else if(this.valX > 0) {
+			return animRight.getCurrentFrame();
+		}else if(this.valY < 0) {
+			return animUp.getCurrentFrame();
+		} else {
+			return animDown.getCurrentFrame();
+		}
+	}
 	
 }
