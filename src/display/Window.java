@@ -15,9 +15,10 @@ public class Window extends Canvas {
 	 JFrame 생성, Game Class의 game 오브젝트 넣고 윈도우 창 생성하는 역할
 	 **/
 	private static final long serialVersionUID = -4810618286807932601L;
+	public static JFrame frame;
 	
 	public Window(int width, int height, String title, Game game) {
-		JFrame frame = new JFrame(title);
+		frame = new JFrame(title);
 		
 		// 프레임 크기 조절
 		frame.setPreferredSize(new Dimension(width, height));

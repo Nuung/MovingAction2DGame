@@ -1,13 +1,10 @@
 package entity;
 
-import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.awt.image.BufferedImage;
-import java.util.Random;
 
 import display.HUD;
-import display.Trail;
 import display.assets.Assets;
 import main.Game;
 import main.objecttype.Handler;
@@ -20,7 +17,6 @@ public class Player extends GameObject {
 	// Attack timer
 //	private long lastAttackTimer, attackCooldown = 400, attackTimer = attackCooldown;
 	
-	private Random r = new Random();
 	private Handler handler;
 
 	// 생성자
@@ -56,8 +52,6 @@ public class Player extends GameObject {
 //		handler.addObject(new Trail(x, y, ID.Trail, Color.WHITE, 32, 32, 0.08f, handler));
 		// 충돌 테스팅 --> with Rectangle!!
 		collision();
-		
-
 	} // tick()
 
 	@Override
@@ -92,6 +86,7 @@ public class Player extends GameObject {
 		
 	} // collision()
 	
+	// ValX, Y (Speed, 방향) 값으로 애니메이션 프레임을 뭘로할지 얻어오기 / private임을 주의
 	private BufferedImage getCurrentAnimationFrame() {
 		if(this.valX < 0) {
 			return animLeft.getCurrentFrame();
@@ -102,6 +97,13 @@ public class Player extends GameObject {
 		} else {
 			return animDown.getCurrentFrame();
 		}
+	} // getCurrentAnimationFrame()
+	
+	public int getPlayerX() {
+		return this.x;
 	}
 	
+	public int getPlayerY() {
+		return this.y;
+	}
 }

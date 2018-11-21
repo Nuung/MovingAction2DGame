@@ -1,10 +1,12 @@
 package main.objecttype;
 
 import java.awt.Graphics;
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import entity.GameObject;
 import entity.Player;
+import entity.item.Shield;
 import main.Game;
 
 // handler 는 object들을 계속해서 최신상태로 유지해 주는 역할을 한다.
@@ -14,7 +16,10 @@ public class Handler {
 	// 우리는 GameObject (abstract) class로 여러 형태 object를 찍어낸다!
 	// 그 모든 object를 list, 더 나아가 Head와 Tail을 가지는 LinkedList 형태로 구현
 	// 각 Game object 로 만들어진 palyer, enemy, coin etc 들은 노드로 저장된다
-	public LinkedList<GameObject> object = new LinkedList<GameObject>();
+	public ArrayList<GameObject> object = new ArrayList<GameObject>();
+	
+	// attack 에 Damage 제어 변수
+	public int attackDamage = 2;
 	
 	// shop에서 speed를 제어하기 위한 번수 -> 적용은 KeyInput에서 됨을 상기
 	public int spd = 5; // speed
@@ -60,5 +65,17 @@ public class Handler {
 	public void removeObject(GameObject object) {
 		this.object.remove(object);
 	}
+	
+	public void itemSetting() {
+		// 노드들 다 검색위해 for
+		for(int i = 0; i < object.size(); i++) {
+			GameObject tempObject = object.get(i);
+			// player 오브젝트 만나면 일단 다 비우고 다시 플레이어 만들어주깅
+			if(tempObject.getId() == ID.Player) {
+				if(Game.gameState == Game.STATE.Game)
+					addObject(new Shield(tempObject.getX(), tempObject.getY(), ID.Shielder, this, (Player) tempObject));
+			} // if
+		} // for
+	} // itemSetting()
 	
 }

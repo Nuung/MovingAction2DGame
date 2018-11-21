@@ -8,6 +8,7 @@ import entity.enemy.EnemyBoss;
 import entity.enemy.FastEnemy;
 import entity.enemy.HardEnemy;
 import entity.enemy.SmartEnemy;
+import entity.item.Shield;
 import main.Game;
 import main.objecttype.Handler;
 import main.objecttype.ID;
@@ -56,6 +57,7 @@ public class Spawn {
 	public void inNormal(int level) {
 		// level에 따라 handler에 적 오브젝트 추가하자!
 		if(level == 2) {
+			handler.itemSetting();
 			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
 		} else if(level == 3) {
@@ -76,6 +78,7 @@ public class Spawn {
 	public void inHard(int level) {
 		// level에 따라 handler에 적 오브젝트 추가하자!
 		if(level == 2) {
+			handler.itemSetting();
 			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
 		} else if(level == 3) {

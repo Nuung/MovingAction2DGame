@@ -12,5 +12,7 @@ public enum ID {
 	HardEnemy(),
 	EnemyBoss(),
 	Trail(),  // tracing, 따라가는 잔향 이펙터
+	Shielder(),
+	AttackItem(),
 	MenuParticle();
 }
