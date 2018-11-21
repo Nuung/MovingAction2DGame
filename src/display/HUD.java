@@ -3,9 +3,6 @@ package display;
 import java.awt.Color;
 import java.awt.Graphics;
 
-import javax.swing.JOptionPane;
-
-import database.DBConnection;
 import main.Game;
 
 // obejct의 상태에 대한 정보를 가지고, 그 정보를 ticking, redering 해주는 class

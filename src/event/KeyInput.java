@@ -4,7 +4,7 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import entity.GameObject;
-import entity.enemy.BasicEnemy;
+import entity.Player;
 import entity.item.AttackItem;
 import main.Game;
 import main.Game.STATE;
@@ -16,6 +16,7 @@ public class KeyInput extends KeyAdapter {
 	
 	// handler가 모든 object를 노드, 링크드 리스트 형태로 제어한다는 점 잊지말자
 	private Handler handler;
+	private static Player PlayerObject;
 	private boolean[] keyDown = new boolean[4]; // key입력이 처먹어들어가는 경우때문에 일반 입력에서 배열형 논리로 바꿈
 	
 	// for detact game state!
@@ -44,23 +45,25 @@ public class KeyInput extends KeyAdapter {
 				if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) { tempObject.setValY(handler.spd);  keyDown[1] = true; }
 				if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) { tempObject.setValX(-handler.spd); keyDown[2] = true; }
 				if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) { tempObject.setValX(handler.spd); keyDown[3] = true; }
+				KeyInput.PlayerObject = (Player) tempObject;
 			} // if
 		} // for
 		
 		// for stop button ( 'p' 키 )
 		if(key == KeyEvent.VK_P) { // 설계는 간단하다 p 누를때마다 static 변수의 논리값이 바뀐다
-			if(game.gameState == STATE.Game) {
+			if(Game.gameState == STATE.Game) {
 				if(Game.paused) Game.paused = false;
 				else Game.paused = true;
-			}
-		}
+			} // inner if
+		} // if
 		
 		// for Attack button ( 'k' 키 )
 		if(key == KeyEvent.VK_K) {
-			if(game.gameState == STATE.Game) {
-				handler.addObject(new AttackItem(300, 350, ID.AttackItem, handler));
-			}
-		}
+			if(Game.gameState == STATE.Game) {
+				// 정교한 좌표값 조정 위해 정수값 빼줌
+				handler.addObject(new AttackItem(PlayerObject.getPlayerX() + 17, PlayerObject.getPlayerY() + 10, ID.AttackItem, handler));
+			} // inner if
+		} // if
 		
 		if(key == KeyEvent.VK_ESCAPE) System.exit(1); // ESC 키 누르면 걍 게임꺼지게 
 		

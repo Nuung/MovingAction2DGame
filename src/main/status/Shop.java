@@ -16,9 +16,10 @@ public class Shop extends MouseAdapter {
 	private HUD hud;
 	
 	// for Cost of item! (box) -> coin is same with score!, 초기 가격임
-	private int Box1 = 10;
-	private int Box2 = 10;
-	private int Box3 = 10;
+	private int Box1 = 10; // max health 
+	private int Box2 = 10; // speed
+	private int Box3 = 10; // healing health
+	private int Box4 = 10; // attack damage
 	
 	public Shop(Handler handler, HUD hud) {
 		this.handler = handler;
@@ -47,6 +48,12 @@ public class Shop extends MouseAdapter {
 		g.drawString("Refill Health", 410, 120);
 		g.drawString("Cost : " + Box3, 410, 140);
 		g.drawRect(400, 100, 100, 80);
+		
+		// in Box4 --> '  Attack Damage '
+		g.setFont(new Font("arial", 0, 12));
+		g.drawString("Attack Damage", 110, 240);
+		g.drawString("Cost : " + Box4, 110, 280);
+		g.drawRect(99, 215, 100, 80);
 		
 		g.drawString("Score : " + hud.getScore(),  Game.WIDTH/2 - 50, 300);
 		g.drawString("Press 'Space' to go back!",  Game.WIDTH/2 - 50, 330);
@@ -88,6 +95,18 @@ public class Shop extends MouseAdapter {
 					hud.setScore(hud.getScore() - Box3);
 					Box3 += 10; // 구매할때마다 당근 가격 오름
 					hud.HEALTH = (100 + (hud.bounds/2));
+				} // most inner if
+			}
+		} // if
+		
+		// for Box4 --> ' Attack Damage '
+		if(mx >= 99 && mx <= 199) {
+			if(my >= 215 && my <= 315) {
+				if(hud.getScore() >= Box4) { // Box3 보다 큰 스코어 있으면
+					hud.setScore(hud.getScore() - Box4);
+					Box4 += 10; // 구매할때마다 당근 가격 오름
+					handler.attackDamage += 2;
+					System.out.println("");
 				} // most inner if
 			}
 		} // if

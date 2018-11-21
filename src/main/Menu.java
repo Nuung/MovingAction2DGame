@@ -150,7 +150,9 @@ public class Menu extends MouseAdapter{
 			// About menu String and Button shape Rectangle
 			g.setFont(fnt);
 			g.setColor(Color.WHITE);
-			g.drawString("MENU", 240, 90);
+			g.drawString("Dodge the", 127, 90);
+			g.setColor(Color.RED);
+			g.drawString("DOT", 390, 90);
 			
 			g.setFont(fnt2);
 			g.setColor(Color.WHITE);
