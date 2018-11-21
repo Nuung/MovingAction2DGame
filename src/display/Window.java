@@ -5,7 +5,6 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-import display.assets.Assets;
 import main.Game;
 
 public class Window extends Canvas {

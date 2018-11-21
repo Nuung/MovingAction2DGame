@@ -7,6 +7,7 @@ import entity.enemy.BasicEnemy;
 import entity.enemy.EnemyBoss;
 import entity.enemy.FastEnemy;
 import entity.enemy.HardEnemy;
+import entity.enemy.LaserEnemy;
 import entity.enemy.SmartEnemy;
 import entity.item.Shield;
 import main.Game;
@@ -21,6 +22,7 @@ public class Spawn {
 	private Handler handler;
 	private HUD hud;
 	private Random r = new Random(); // spawn할때 위치 랜덤 위해
+	private static final boolean horizontal = true, vertical = false; // horizontal 이 가로, vertical이 세로
 	
 	// Score, lv 탐색 syste 위한 meber val
 	private int scoreKeep = 0;
@@ -60,6 +62,7 @@ public class Spawn {
 			handler.itemSetting();
 			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		} else if(level == 3) {
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
 		} else if(level == 4) {
@@ -69,9 +72,13 @@ public class Spawn {
 		} else if(level == 6) {
 			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
 			handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler));
+		}else if(level == 7) {
+			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		}else if(level == 10) {
 			handler.clearEnemys();
 			handler.addObject(new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler));
+		} else if(level == 14) {
+			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		}
 	} // inNormal()
 	
@@ -81,6 +88,7 @@ public class Spawn {
 			handler.itemSetting();
 			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		} else if(level == 3) {
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
 		} else if(level == 4) {
@@ -93,11 +101,19 @@ public class Spawn {
 			handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler));
 		} else if(level == 7) {
 			handler.addObject(new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.HardEnemy, handler));
+			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		} else if(level == 10) {
 			handler.clearEnemys();
 			handler.addObject(new EnemyBoss((Game.WIDTH / 2) - 48, -120, ID.EnemyBoss, handler));
 			handler.addObject(new SmartEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.SmartEnemy, handler));
+		} else if(level == 14) {
+			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		}
 	} // inHard
+	
+	public void makingLaser(boolean isHorizontal) {
+		if(isHorizontal) handler.addObject(new LaserEnemy(0, r.nextInt(Game.HEIGHT - 50), ID.LaserEnemy, handler, isHorizontal));
+		else handler.addObject(new LaserEnemy(r.nextInt(Game.HEIGHT - 50), 0, ID.LaserEnemy, handler, isHorizontal));		
+	} // makingLaser()
 	
 }

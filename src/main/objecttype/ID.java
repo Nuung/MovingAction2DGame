@@ -11,6 +11,7 @@ public enum ID {
 	SmartEnemy(), // AI
 	HardEnemy(),
 	EnemyBoss(),
+	LaserEnemy(), // 레이저 이펙트 
 	Trail(),  // tracing, 따라가는 잔향 이펙터
 	Shielder(),
 	AttackItem(),

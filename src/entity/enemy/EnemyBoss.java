@@ -5,7 +5,6 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
-import display.HUD;
 import display.Trail;
 import entity.GameObject;
 import main.Game;
@@ -120,7 +119,7 @@ public class EnemyBoss extends GameObject {
 			if(tempObject.getId() == ID.AttackItem) { 
 				if(getBounds().intersects(tempObject.getBounds())) { // 간섭되면 true, 아니면 false가 리턴된다
 					// collision code
-					this.HEALTH -= 2; 
+					this.HEALTH -= handler.attackDamage; 
 				} // inner if
 			} // if
 		} // for
