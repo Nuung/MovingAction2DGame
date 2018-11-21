@@ -5,6 +5,7 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.Random;
 
+import display.HUD;
 import display.Trail;
 import entity.GameObject;
 import main.Game;
@@ -16,6 +17,8 @@ public class EnemyBoss extends GameObject {
 
 	private Handler handler;
 	Random rn = new Random();
+	private int HEALTH = 100;
+	
 	// 타이머는 보스에게 특정 움직임의 패턴을 주기위함임
 	private int timer = 80; // 첫번째 액션
 	private int timer2 = 50; // 두번째 액션
@@ -32,7 +35,13 @@ public class EnemyBoss extends GameObject {
 
 	@Override
 	public void tick() {
-		// TODO Auto-generated method stub
+		// for boss die action
+		collision();
+		if(this.HEALTH <= 0) {
+			handler.removeObject(this);
+		}
+		System.out.println(this.HEALTH);
+		
 		this.x += valX;
 		this.y += valY;
 		
@@ -103,4 +112,19 @@ public class EnemyBoss extends GameObject {
 		return new Rectangle(x, y, 96, 96);
 	} // getBounds()
 
+	public void collision() {
+		
+		for(int i = 0; i < handler.object.size(); i++) {
+			// 일단 handler가 가지고 있는 object를 다 돈다, 이 'Enemy' 일때 충돌을 감지하는 거여~
+			GameObject tempObject = handler.object.get(i);
+			if(tempObject.getId() == ID.AttackItem) { 
+				if(getBounds().intersects(tempObject.getBounds())) { // 간섭되면 true, 아니면 false가 리턴된다
+					// collision code
+					this.HEALTH -= 2; 
+				} // inner if
+			} // if
+		} // for
+		
+	} // collision()
+	
 }

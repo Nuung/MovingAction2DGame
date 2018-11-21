@@ -4,6 +4,8 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
 import entity.GameObject;
+import entity.enemy.BasicEnemy;
+import entity.item.AttackItem;
 import main.Game;
 import main.Game.STATE;
 import main.objecttype.Handler;
@@ -35,7 +37,7 @@ public class KeyInput extends KeyAdapter {
 		// handler.object.size는 링크드 리스트의 토탈 사이즈 (개수가) 됨
 		// 즉, 모든 object 개수만큼 액션 지정(event 추가) 돌린다는 의미임
 		for(int i = 0; i < handler.object.size(); i++) {
-			GameObject tempObject = handler.object.get(i);
+			GameObject tempObject = handler.object.get(i);				
 			if(tempObject.getId() == ID.Player) {
 				// KeyEvent Class는 키보드의 특정 키 값을 변수형식으로 가지고 있음
 				if(key == KeyEvent.VK_W || key == KeyEvent.VK_UP) { tempObject.setValY(-handler.spd); keyDown[0] = true; }
@@ -50,6 +52,13 @@ public class KeyInput extends KeyAdapter {
 			if(game.gameState == STATE.Game) {
 				if(Game.paused) Game.paused = false;
 				else Game.paused = true;
+			}
+		}
+		
+		// for Attack button ( 'k' 키 )
+		if(key == KeyEvent.VK_K) {
+			if(game.gameState == STATE.Game) {
+				handler.addObject(new AttackItem(300, 350, ID.AttackItem, handler));
 			}
 		}
 		

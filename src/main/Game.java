@@ -42,6 +42,7 @@ public class Game extends Canvas implements Runnable {
 	private Handler handler; // 우린 그냥 Handler 클래스의 tick, render 메소드만 한번 호출하면, 모든 오브젝트에 대해 명령 하달됨
 	private HUD hud;
 	private Spawn spawner;
+	private Window window;
 	private Menu menu; // 메뉴 state!
 	private Shop shop; // shop state!
 	
@@ -71,7 +72,7 @@ public class Game extends Canvas implements Runnable {
 		this.addMouseListener(menu); // 마우스 액션
 		this.addMouseListener(shop); // 마우스 액션
 		
-		new Window(WIDTH, HEIGHT, "GAME", this);
+		window = new Window(WIDTH, HEIGHT, "GAME", this);
 		spawner = new Spawn(this, handler, hud);
 		r = new Random();
 		

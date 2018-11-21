@@ -3,14 +3,21 @@ package main;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.GraphicsConfiguration;
+import java.awt.Image;
+import java.awt.Transparency;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 import java.util.Random;
 
 import javax.swing.JOptionPane;
 
 import database.DBConnection;
 import display.HUD;
+import display.Window;
 import display.assets.Assets;
 import entity.Player;
 import entity.enemy.BasicEnemy;
@@ -156,7 +163,7 @@ public class Menu extends MouseAdapter{
 			g.drawRect(210, 350, 200, 64);
 			g.drawString("QUIT", 270, 390);
 		} // Menu State에서 호출 if
-		else if(Game.gameState == STATE.Leaderboard) {
+		else if(Game.gameState == STATE.Leaderboard) {			
 			Font fnt = new Font("arial", 1, 50);
 			Font fnt2 = new Font("arial", 1, 30);
 			Font fnt3 = new Font("arial", 1, 15);
@@ -186,6 +193,11 @@ public class Menu extends MouseAdapter{
 			g.drawString("My Best Score", 80, 240);
 			g.drawString(": "+Game.mybestBoard, 80, 260);
 			
+//			Graphics2D g2d = (Graphics2D) g;
+//			g2d.translate(170, 0); // If needed 
+//			g2d.rotate(1); // Rotate the image by 1 radian 
+//			g2d.rotate(180.0/3.14);  // to rotate by 1 degree 
+//			g2d.drawImage(Assets.leaderButton, 130, 0, 80, 80, null);
 		} // Help State에서 호출 if
 		else if(Game.gameState == STATE.End) {
 			Font fnt = new Font("arial", 1, 50);
@@ -227,6 +239,5 @@ public class Menu extends MouseAdapter{
 			g.drawRect(210, 350, 200, 64);
 			g.drawString("Back", 270, 390);
 		} // Menu State에서 호출 if
-		
 	} // render()
 } // Menu Class
