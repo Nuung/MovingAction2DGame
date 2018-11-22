@@ -6,6 +6,7 @@ import java.awt.event.KeyEvent;
 import entity.GameObject;
 import entity.Player;
 import entity.item.AttackItem;
+import entity.item.Shield;
 import main.Game;
 import main.Game.STATE;
 import main.objecttype.Handler;
@@ -18,6 +19,7 @@ public class KeyInput extends KeyAdapter {
 	private Handler handler;
 	private static Player PlayerObject;
 	private boolean[] keyDown = new boolean[4]; // key입력이 처먹어들어가는 경우때문에 일반 입력에서 배열형 논리로 바꿈
+	private Shield shielder;
 	
 	// for detact game state!
 	private Game game;
@@ -26,6 +28,8 @@ public class KeyInput extends KeyAdapter {
 	public  KeyInput(Handler handler, Game game) {
 		this.game = game;
 		this.handler = handler;  // 추후 동작을 위해 handler 객체 가지고 있기
+		this.shielder = null;
+		
 		for(int i = 0; i < 4; i ++) {
 			this.keyDown[i] = false; 
 		} // for
@@ -34,6 +38,17 @@ public class KeyInput extends KeyAdapter {
 	public void keyPressed(KeyEvent e) { // key 눌렀을때
 		int key = e.getKeyCode(); // 특정 키값 입력받기 
 		
+//		// for get shielder object and seanding player 좌표
+//		if(this.shielder == null) {
+//			for(int i = 0; i < handler.object.size(); i++) {
+//				GameObject shielderObject = handler.object.get(i);
+//				if(shielderObject.getId() == ID.Shielder) {
+//					this.shielder = (Shield) shielderObject;
+//				} // inner if
+//			} // for
+//		} // if
+
+		
 		// Key events for player 
 		// handler.object.size는 링크드 리스트의 토탈 사이즈 (개수가) 됨
 		// 즉, 모든 object 개수만큼 액션 지정(event 추가) 돌린다는 의미임
@@ -41,10 +56,26 @@ public class KeyInput extends KeyAdapter {
 			GameObject tempObject = handler.object.get(i);				
 			if(tempObject.getId() == ID.Player) {
 				// KeyEvent Class는 키보드의 특정 키 값을 변수형식으로 가지고 있음
-				if(key == KeyEvent.VK_W || key == KeyEvent.VK_UP) { tempObject.setValY(-handler.spd); keyDown[0] = true; }
-				if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) { tempObject.setValY(handler.spd);  keyDown[1] = true; }
-				if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) { tempObject.setValX(-handler.spd); keyDown[2] = true; }
-				if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) { tempObject.setValX(handler.spd); keyDown[3] = true; }
+				if(key == KeyEvent.VK_W || key == KeyEvent.VK_UP) { 
+					tempObject.setValY(-handler.spd); keyDown[0] = true; 
+//					if(this.shielder != null) { shielder.setY(tempObject.getY()); shielder.setX(tempObject.getX()); }
+				}
+				
+				if(key == KeyEvent.VK_S || key == KeyEvent.VK_DOWN) { 
+					tempObject.setValY(handler.spd);  keyDown[1] = true; 
+//					if(this.shielder != null) { shielder.setY(tempObject.getY()); shielder.setX(tempObject.getX()); }
+				}
+				
+				if(key == KeyEvent.VK_A || key == KeyEvent.VK_LEFT) { 
+					tempObject.setValX(-handler.spd); keyDown[2] = true; 
+//					if(this.shielder != null) { shielder.setX(tempObject.getX()); shielder.setY(tempObject.getY()); }
+				}
+				
+				if(key == KeyEvent.VK_D || key == KeyEvent.VK_RIGHT) { 
+					tempObject.setValX(handler.spd); keyDown[3] = true; 
+//					if(this.shielder != null) { shielder.setX(tempObject.getX()); shielder.setY(tempObject.getY()); }
+				}
+				
 				KeyInput.PlayerObject = (Player) tempObject;
 			} // if
 		} // for

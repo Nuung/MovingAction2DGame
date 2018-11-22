@@ -44,15 +44,15 @@ public class LaserEnemy extends GameObject {
 		if(actionCount1 < 1000) {
 			if(actionCount2 >= 10) {
 				g.setColor(Color.RED);
-				if(isHorizontal) g.fillRect(x, y, Game.WIDTH, 8); 
+				if(isHorizontal) g.fillRect(x, y, Game.WIDTH, 6); 
 				else g.fillRect(x, y, 8, Game.HEIGHT);
 				actionCount2 = 0;
 			}
 			actionCount1++;
 			actionCount2++;
 		} // if
-		else if (actionCount1 >= 1000 && actionCount3 < 500){
-			valHSize = 16; 
+		else if (actionCount1 >= 1000 && actionCount3 < 150){
+			valHSize = 14; 
 
 			g.setColor(Color.RED);
 			if(isHorizontal) g.fillRect(x, y, Game.WIDTH, valHSize); 
@@ -60,7 +60,7 @@ public class LaserEnemy extends GameObject {
 			
 			actionCount3++;
 		} // else if
-		else if(actionCount3 >= 500){
+		else if(actionCount3 >= 150){
 			handler.removeObject(this);
 		}
 		
