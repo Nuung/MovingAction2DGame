@@ -17,35 +17,25 @@ public class Shield extends GameObject {
 
 	private Handler handler;
 	private Player player;
-	private int tempValY = 0;
-	private int vv ;//추가
+	private int rotateCounter = 0;
 	
 	public Shield(int x, int y, ID id, Handler handler, Player player) {
 		super(player.getPlayerX() - 4, player.getPlayerY() - 4, id);
 		this.handler = handler;
 		this.player = player;
-		this.tempValY = player.getPlayerY();//츄가
-		//valY = 2;
-		this.vv = 2;
+		valY = 2;
 	}
 
 	@Override
 	public void tick() {
-		// player size 42 by 42 pixel
-		this.x = player.getPlayerX() - 4;
-		this.y = tempValY;
-		this.tempValY += vv + handler.spd;
-//		this.tempValY += valY;
-//		this.y += valY;
-//		현재 캐릭터 위치	getPlayer	
-//				
+		rotateCounter++;
 		
-
-		if(tempValY >= player.getPlayerY()+42 || tempValY < player.getPlayerY()-42) {//player.만 빼면댐
-			vv *= -1;
-		}
+		if(rotateCounter >= 4) {
+			rotate(300, 300, this.x, this.y, 10);
+			rotateCounter = 0;
+		} // if
 		
-		handler.addObject(new Trail(x, y, ID.Trail, Color.MAGENTA, 10, 10, 0.18f, handler));
+//		handler.addObject(new Trail(x, y, ID.Trail, Color.MAGENTA, 10, 10, 0.18f, handler));
 		collision();
 	} // tick()
 
@@ -79,5 +69,19 @@ public class Shield extends GameObject {
 		} // for
 		
 	} // collision()
+	
+	public void rotate(int centerX, int centerY, int oldX, int oldY, int deg){
 		
+		double dDegree = Math.toRadians(deg);
+		double cosd = Math.cos(dDegree);
+		double sind = Math.sin(dDegree);
+
+		// (150,150)좌표를 중심으d로 회전
+		double newX =  (oldX - centerX) * cosd - (oldY - centerX) * sind + centerX;                  
+		double newY =  (oldX - centerY) * sind + (oldY - centerY) * cosd + centerY;
+		
+		this.x = (int) newX;
+		this.y = (int) newY;
+	 }
+	
 }
