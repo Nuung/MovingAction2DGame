@@ -31,7 +31,7 @@ public class Shield extends GameObject {
 		rotateCounter++;
 		
 		if(rotateCounter >= 4) {
-			rotate(300, 300, this.x, this.y, 10);
+//			rotate(300, 300, this.x, this.y, 10);
 			rotateCounter = 0;
 		} // if
 		
