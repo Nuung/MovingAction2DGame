@@ -16,7 +16,7 @@ public class EnemyBoss extends GameObject {
 
 	private Handler handler;
 	Random rn = new Random();
-	private int HEALTH = 100;
+	private int HEALTH = 3000;
 	
 	// 타이머는 보스에게 특정 움직임의 패턴을 주기위함임
 	private int timer = 80; // 첫번째 액션
@@ -82,13 +82,15 @@ public class EnemyBoss extends GameObject {
 		
 		// 4번째 패턴
 		if(timerClear <= 0) {
-			if(valX != 0) valX = 0; valY = 0;
+			if(valX != 0) valX = 4; valY = 0;
 		}
 				
 		// x축에 벽에 대한 벗어남 (즉 벽에 충돌) 액션 추가
 		if(x <= 0 || x >= Game.WIDTH - 96 ) valX = -valX;
 		if(timerClear > 0) {
 			handler.addObject(new Trail(x, y, ID.Trail, Color.RED, 96, 96, 0.088888f, handler)); // 꼬리
+		} else {
+//			handler.addObject(new Trail(x, y, ID.Trail, Color.ORANGE, 96, 96, 0.198888f, handler)); // 꼬리
 		}
 			
 	} // tick()
@@ -97,8 +99,8 @@ public class EnemyBoss extends GameObject {
 	public void render(Graphics g) {
 		// TODO Auto-generated method stub
 		if(timerClear <= 0) {
-			g.setColor(Color.ORANGE);
-			g.fillRect(Game.WIDTH/2, Game.HEIGHT/2, 96, 96);
+//			g.setColor(Color.ORANGE);
+//			g.fillRect(Game.WIDTH/2, Game.HEIGHT/2, 96, 96);
 		} else {
 			g.setColor(Color.RED);		
 			g.fillRect(x, y, 96, 96);
