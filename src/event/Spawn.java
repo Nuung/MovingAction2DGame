@@ -1,5 +1,6 @@
 package event;
 
+import java.awt.Color;
 import java.util.Random;
 
 import display.HUD;
@@ -9,6 +10,7 @@ import entity.enemy.FastEnemy;
 import entity.enemy.HardEnemy;
 import entity.enemy.LaserEnemy;
 import entity.enemy.SmartEnemy;
+import entity.enemy.TsunamiEnemy;
 import entity.item.Shield;
 import main.Game;
 import main.objecttype.Handler;
@@ -41,7 +43,7 @@ public class Spawn {
 			// 현재 level 에서 +1 한 레벨로 
 			hud.setLevel(hud.getLevel() + 1);
 			
-			if(hud.getLevel() >= 15) {
+			if(hud.getLevel() >= 16) {
 				hud.setLevel(1);
 			}
 			
@@ -62,9 +64,11 @@ public class Spawn {
 //			handler.itemSetting(); // item Setting / like shield .. -> handler class
 			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+			TsunamiEnemyEvent(true);
 			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		} else if(level == 3) {
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+			TsunamiEnemyEvent(false);
 		} else if(level == 4) {
 			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
 		} else if(level == 5) {
@@ -87,10 +91,12 @@ public class Spawn {
 		if(level == 2) {
 //			handler.itemSetting(); // item Setting / like shield .. -> handler class
 			// - 50은 생성될때 Frame밖에서 생성되는 일 없도록 하기 위해 ( 안정빵 수치 )
+			TsunamiEnemyEvent(true);
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
 			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		} else if(level == 3) {
 			handler.addObject(new BasicEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.Enemy, handler));
+			TsunamiEnemyEvent(false);
 		} else if(level == 4) {
 			handler.addObject(new HardEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.HardEnemy, handler));
 			handler.addObject(new FastEnemy(r.nextInt(Game.WIDTH - 50), r.nextInt(Game.HEIGHT - 50), ID.FastEnemy, handler));
@@ -110,6 +116,33 @@ public class Spawn {
 			makingLaser(horizontal); 	makingLaser(vertical); makingLaser(horizontal); makingLaser(vertical);
 		}
 	} // inHard
+	
+	public void TsunamiEnemyEvent(Boolean isLeft) {
+		// 여파인 Cyan 색의 파도들을 일정한 Blue파도 보다 더 왼쪽에 배치시키지만, 일정 사이 랜덤 값 왼쪽으로
+		Random rnO = new Random();
+		Random rnT = new Random();
+		int makeNull = rnT.nextInt((15 - 0) +1);
+		
+		if(isLeft) { // 왼쪽에서 오른쪽으로 갈때
+			for(int i = 0; i < 15; i ++) {
+				// 피할수 있는 공간 만들어주기
+				if(makeNull == i || makeNull == i +1 || makeNull == i +2 ) continue;
+				
+				handler.addObject(new TsunamiEnemy(128, 32*i, ID.TsunamiEnemy, handler, Color.BLUE, isLeft));
+				handler.addObject(new TsunamiEnemy(rnO.nextInt((64 - 0) + 1), 32*i + 16, ID.TsunamiEnemy, handler, Color.CYAN, isLeft));
+			} // for	
+		}
+		else { // 오른쪽에서 왼쪽으로 갈때
+			for(int i = 0; i < 15; i ++) {
+				// 피할수 있는 공간 만들어주기
+				if(makeNull == i || makeNull == i +1 || makeNull == i +2 ) continue;
+				
+				handler.addObject(new TsunamiEnemy(Game.WIDTH - 128, 32*i, ID.TsunamiEnemy, handler, Color.BLUE, isLeft));
+				handler.addObject(new TsunamiEnemy(Game.WIDTH - rnO.nextInt((64 - 0) + 1), 32*i + 16, ID.TsunamiEnemy, handler, Color.CYAN, isLeft));
+			} // for	
+		}
+
+	} // TsunamiEnemyEvent()
 	
 	public void makingLaser(boolean isHorizontal) {
 		if(isHorizontal) handler.addObject(new LaserEnemy(0, r.nextInt(Game.HEIGHT - 50), ID.LaserEnemy, handler, isHorizontal));
