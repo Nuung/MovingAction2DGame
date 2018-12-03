@@ -273,9 +273,4 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 	
-	public static void main(String args[]) {
-		new Game(); // this object의 생성자를 호출 
-		DBsetting();
-	} // MAIN
-	
 } // Game Class

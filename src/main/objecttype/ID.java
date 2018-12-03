@@ -13,6 +13,7 @@ public enum ID {
 	EnemyBoss(),
 	LaserEnemy(), // 레이저 이펙트 
 	Trail(),  // tracing, 따라가는 잔향 이펙터
+	TsunamiEnemy(), // 쓰나미 처럼 파도 오는 액션 이벤트위한 object
 	Shielder(),
 	AttackItem(),
 	MenuParticle();
