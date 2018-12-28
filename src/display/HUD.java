@@ -9,8 +9,9 @@ import main.Game;
 // ex) LV, SCORE, HEALTH, etc
 public class HUD {
 	
+	// HEALTH에서 +a가 되는 값을 정해주는게 bounds변수
 	public int bounds = 0;
-	public static int HEALTH = 100;
+	public static int HEALTH = 100; // HEALTH는 체력, static임을 명시
 	//R G B 8bits (1byes)의 최대값 2^8 - 1 --> 요놈 값 조종해서 다른 색으로 랜더링 편하게 가능
 	private int greenValue = 255; 
 	

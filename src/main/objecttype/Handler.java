@@ -3,6 +3,7 @@ package main.objecttype;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Vector;
 
 import entity.GameObject;
 import entity.Player;
@@ -16,7 +17,7 @@ public class Handler {
 	// 우리는 GameObject (abstract) class로 여러 형태 object를 찍어낸다!
 	// 그 모든 object를 list, 더 나아가 Head와 Tail을 가지는 LinkedList 형태로 구현
 	// 각 Game object 로 만들어진 palyer, enemy, coin etc 들은 노드로 저장된다
-	public ArrayList<GameObject> object = new ArrayList<GameObject>();
+	public Vector<GameObject> object = new Vector<GameObject>();
 	
 	// attack 에 Damage 제어 변수
 	public int attackDamage = 2;
