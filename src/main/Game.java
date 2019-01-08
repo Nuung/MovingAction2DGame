@@ -9,7 +9,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import database.DBConnection;
+import database.GameDAO;
 import display.HUD;
 import display.Window;
 import display.assets.Assets;
@@ -56,7 +56,7 @@ public class Game extends Canvas implements Runnable {
 		End;
 	}
 	
-	// 현수 state를 바꾸고 싶으면 여길 건들이면 됨
+	// 최초 실행 state setting
 	public static STATE gameState = STATE.Menu;
 	
 	// 생성자
@@ -248,17 +248,15 @@ public class Game extends Canvas implements Runnable {
 		leaderBoard.clear();
 		mybestBoard = "";
 		// 리더보드 가져오기 DB / 백엔드 부분
-		DBConnection connection = new DBConnection();
-		
-		// 모두 가져오기 
-		ResultSet resultAll = connection.getLeaderBoard();
+		GameDAO connection = new GameDAO();
+		ResultSet resultAll = connection.getLeaderBoard();	// 모두 가져오기 
 		try {
-			do { // next하면 포인트가 다음을 다르킨다 생각하자
+			while(resultAll.next()) { // next하면 포인트가 다음을 다르킨다 생각하자
 				String name = resultAll.getString("name");
 				String score = resultAll.getString("score");
 				System.out.println(name+", "+score);
 				leaderBoard.add(name + ": " + score);
-			} while(resultAll.next()); // do - while : 첫번째 결과 row값도 실행하기 위해
+			} // while()
 		} catch (SQLException e) {
 			e.printStackTrace();
 		} // try - catch

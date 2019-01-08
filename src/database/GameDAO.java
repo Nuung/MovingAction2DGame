@@ -6,7 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-public class DBConnection {
+public class GameDAO {
 
 	private DBConfigue dbConfigue;
 	private Connection con;
@@ -29,9 +29,9 @@ public class DBConnection {
 	
 	private void closeDB() {
 		try {
-			this.rs.close();
-			this.st.close();
-			this.con.close();
+			if(this.rs != null) this.rs.close();
+			if(this.st != null) this.st.close();
+			if(this.con != null) this.con.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -91,8 +91,7 @@ public class DBConnection {
 		try {
 			String SQL = "SELECT * FROM `gamescore` ORDER BY `score` DESC";
 			rs = st.executeQuery(SQL); // rs가 SQL 구문의 결과 행 값들을 가지게 된다.
-			if(rs.next()) { // SQL구문의 결과값이 존재한다면
-				this.closeDB();
+			if(rs != null) { // SQL구문의 결과값이 존재한다면
 				return rs;
 			} // if
 		} catch(Exception e) {
@@ -108,13 +107,11 @@ public class DBConnection {
 			String SQL = "SELECT * FROM `gamescore` WHERE `name` = '"+ name +"' ORDER BY `score` DESC";
 			rs = st.executeQuery(SQL); // rs가 SQL 구문의 결과 행 값들을 가지게 된다.
 			if(rs.next()) { // SQL구문의 결과값이 존재한다면
-				this.closeDB();
 				return rs;
 			} // if
 		} catch(Exception e) {
 			System.out.println(" DB searching error (in SQL 구문) : " + e.getMessage());
 		} // try - catch
-		this.closeDB();
 		this.closeDB();
 		return rs;
 	}
