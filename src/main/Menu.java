@@ -15,7 +15,7 @@ import java.util.Random;
 
 import javax.swing.JOptionPane;
 
-import database.DBConnection;
+import database.GameDAO;
 import display.HUD;
 import display.Window;
 import display.assets.Assets;
@@ -107,7 +107,7 @@ public class Menu extends MouseAdapter{
 			} // inner if
 			
 			if(moveOver(mx, my, 286, 350, 166, 64)) { // Up load the score to DB
-				DBConnection dbScore = new DBConnection();
+				GameDAO dbScore = new GameDAO();
 				try {
 					dbScore.InsertScore(hud.getScore());
 				} catch(Exception e1) {
