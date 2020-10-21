@@ -34,9 +34,11 @@
 ## 프로젝트 설명 및 세부 정보
 
 ### prolog
-- 
+- 추억의 [곰플레이어 닷지 게임](https://prolite.tistory.com/1388)을 조금 다른 방식으로, java만 사용해서 구현해 보고 싶었습니다. 
+- Thread를 통한 FPS ~ 랜더링, 추상클래스와 인터페이스, Swing 컴포넌트들의 조합과 그 조합에 event를 추가하면서 클래스 구조를 설계하는 것이 핵심이고 학습의 메인입니다. 
 
 ### UML
 - 우선 가장 상위, static main method는 아래 이미지와 같이 위치 합니다.
-<img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/readme_img1.png" width="60%" /> 
+<img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/readme_img1.png" width="60%" />
+ 
 
