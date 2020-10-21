@@ -15,16 +15,17 @@
 ## In Game Photo
 
 <div align = "center">
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img1.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img2.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img3.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img4.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img5.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img6.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img7.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img8.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img9.png" width="60%" />
-    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img10.png" width="60%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/ingame_img1.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img2.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img3.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img4.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img5.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img6.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img7.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img8.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img9.png" width="40%" />
+    <img src="https://github.com/Nuung/MovingAction2DGame/tree/master/res/textures/ingame_img10.png" width="40%" />
+    
 </div>
 
 
@@ -39,6 +40,6 @@
 
 ### UML
 - 우선 가장 상위, static main method는 아래 이미지와 같이 위치 합니다.
-<img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/readme_img1.png" width="60%" />
+<img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/readme_img1.png" width="40%" />
  
 
