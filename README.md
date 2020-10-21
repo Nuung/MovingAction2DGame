@@ -51,6 +51,14 @@ IDE에서 import -> Launcher.java -> Run Java Application
   ~~~~
 - 세부 사항은 package database -> DBConfigue.java 에서 확인 가능합니다!
 
+### Control
+
+```
+Move : ←↑↓→ or WASD
+PAUSE : P
+ATTACK : K
+SHOP : SPACE BAR
+```
 
 
 ## 프로젝트 설명 및 세부 정보
@@ -71,7 +79,7 @@ IDE에서 import -> Launcher.java -> Run Java Application
 
 
 ### More Information
-- <h3>창의학습공동체 프로그램 참여 결과물</h3></br>
+- <h3>창의학습공동체 프로그램 참여 결과물</h3>
 	- JAVA를 공부하는 소모임을 직접 만들어서 Doge the Dot이라는 이름으로 캐릭터를 조작해 사방에서 날라오는 여러 장애물을 피하는 게임을 만들었습니다. 
 	- Canvas와 JFrame 을 이용해 렌더링했고, 렌더링을 묶어주는 최상위 클래스에서 Runnable 인터페이스 상속으로 스레드를 만들어서 초당 60프레임으로 게임을 구현했습니다. 
   - 기본적인 클래스의 구조는 검색을 통한 클론코딩으로 시작하고 조원들끼리 모여 여러 아이디어를 추가했습니다. 렌더링이 필요한 object들을 위해 추상클래스로 GameObject 클래스를 만들어서 상속받은 뒤 구현했습니다. 
