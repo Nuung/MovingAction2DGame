@@ -51,6 +51,14 @@ IDE에서 import -> Launcher.java -> Run Java Application
   ~~~~
 - 세부 사항은 package database -> DBConfigue.java 에서 확인 가능합니다!
 
+### Control
+
+```
+Move : ←↑↓→ or WASD
+PAUSE : P
+ATTACK : K
+SHOP : SPACE BAR
+```
 
 
 ## 프로젝트 설명 및 세부 정보
