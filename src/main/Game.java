@@ -251,7 +251,7 @@ public class Game extends Canvas implements Runnable {
 		GameDAO connection = new GameDAO();
 		ResultSet resultAll = connection.getLeaderBoard();	// 모두 가져오기 
 		try {
-			while(resultAll.next()) { // next하면 포인트가 다음을 다르킨다 생각하자
+			while(resultAll != null && resultAll.next()) { // next하면 포인트가 다음을 다르킨다 생각하자
 				String name = resultAll.getString("name");
 				String score = resultAll.getString("score");
 				System.out.println(name+", "+score);

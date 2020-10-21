@@ -89,11 +89,15 @@ public class GameDAO {
 	public ResultSet getLeaderBoard() {
 		this.connectDB();
 		try {
-			String SQL = "SELECT * FROM `gamescore` ORDER BY `score` DESC";
+			String SQL = "SELECT * FROM gamescore ORDER BY score DESC";
 			rs = st.executeQuery(SQL); // rs가 SQL 구문의 결과 행 값들을 가지게 된다.
 			if(rs != null) { // SQL구문의 결과값이 존재한다면
 				return rs;
 			} // if
+			else {
+				System.out.println("There is no any data");
+				return null;
+			}
 		} catch(Exception e) {
 			System.out.println(" DB searching error (in SQL 구문) : " + e.getMessage());
 		} // try - catch
