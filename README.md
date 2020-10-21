@@ -71,7 +71,13 @@ SHOP : SPACE BAR
 
 ### UML
 - 우선 가장 상위, static main method는 아래 이미지와 같이 위치 합니다.
-<img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/readme_img1.png" width="40%" />
+- <img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/readme_img1.png" width="40%" />
+- 전체 UML은 아래 이미지와 같습니다! 처음 보면 굉장히 복잡해 보이지만 단순합니다.
+- <img src="https://github.com/Nuung/MovingAction2DGame/blob/master/DodgeTheDot_UML/DodgeTheDot_UML.png" />
+- 핵심 적인 부분을 몇가지 짚어보면,
+  - 싱글톤 처럼 Handler Class의 Object, **Vector<GameObject>** 에 다른 class object들이 add 된다! 그러면서 개별 object target대상으로 tick() method가 일어난다.
+  - 그 Entity들은 모두 GameObject Type 이다! GameObject Class는 **abstract class** 다! 
+  - Game Class에서는 Display를 핵심적으로 object를 다루고 **STATE**를 통해서 GameObject를 어떻게 할지 결정이 된다! 즉, Display state를 가지고 보여주는 랜더링만 바뀌는 것이다. 
 
 
 ### Abstract class vs Interface
