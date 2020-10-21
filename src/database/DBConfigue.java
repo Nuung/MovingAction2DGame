@@ -5,11 +5,11 @@ public class DBConfigue {
 	// member 
 	private String dbName, dbPass;
 	private String jdbcDriver = "com.mysql.cj.jdbc.Driver";
-	private String jdbcUrl = "jdbc:mysql://localhost:3306/javadb?characterEncoding=UTF-8&serverTimezone=UTC";
+	private String jdbcUrl = "jdbc:mysql://localhost:3306/javadb?&serverTimezone=Asia/Seoul&useSSL=false";
 	
 	public DBConfigue() {
 		this.dbName = "root";
-		this.dbPass = "45812qlgks!#";
+		this.dbPass = "45812Qlgks!";
 	}
 	
 	// getter and setter
