@@ -5,4 +5,3 @@
 ## InFo
 <h2>Making 2D tile game with java that has moving action ◎</br>
   Basic of 2D game rendering and ticking (processing)</h2>
-
