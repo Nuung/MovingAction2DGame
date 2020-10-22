@@ -80,10 +80,6 @@ SHOP : SPACE BAR
   - Game Class에서는 Display를 핵심적으로 object를 다루고 **STATE**를 통해서 GameObject를 어떻게 할지 결정이 된다! 즉, Display state를 가지고 보여주는 랜더링만 바뀌는 것이다. 
 
 
-### Abstract class vs Interface
-- 가 
-
-
 ### More Information
 - <h3>창의학습공동체 프로그램 참여 결과물</h3>
 - JAVA를 공부하는 소모임을 직접 만들어서 Doge the Dot이라는 이름으로 캐릭터를 조작해 사방에서 날라오는 여러 장애물을 피하는 게임을 만들었습니다. 
