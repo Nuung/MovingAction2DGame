@@ -6,9 +6,7 @@
 # MovingAction2DGame
 
 - 2018 세종 창의학습 공동체 창의 마루상(1등상) / Making 2D tile game with java that has moving action ◎ / Basic of 2D game rendering and ticking (processing)
-- <h3>Making 2D tile game with java that has moving action ◎</br>
-  Basic of 2D game rendering and ticking (processing)</h3>
-- [Release Check!](https://github.com/Nuung/MovingAction2DGame/releases)
+- > [Release Check!](https://github.com/Nuung/MovingAction2DGame/releases)
 
 ###
 
