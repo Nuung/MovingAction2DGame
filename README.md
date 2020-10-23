@@ -38,7 +38,7 @@ IDE에서 import -> Launcher.java -> Run Java Application
 - <img src="https://github.com/Nuung/MovingAction2DGame/blob/master/res/textures/readme_img2.png" />
 - 추가 안해도 실행은 되지만 스코어는 이용할 수 없습니다. 기본적으로 localhost를 사용합니다. 그렇기 때문에 가볍게 Database와 table만 아래와 같이 만들어 줍니다.
   ~~~~sql
-  CREATE DATABASE javadb;
+  CREATE DATABASE IF NOT EXISTS javadb CHARACTER SET utf8 COLLATE utf8_general_ci;
   DROP TABLE IF EXISTS gamescore;
   use javadb;
   CREATE TABLE gamescore (
