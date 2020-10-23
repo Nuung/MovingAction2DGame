@@ -42,7 +42,7 @@ IDE에서 import -> Launcher.java -> Run Java Application
   DROP TABLE IF EXISTS gamescore;
   use javadb;
   CREATE TABLE gamescore (
-    id  	   	 INTEGER NOT NULL PRIMARY KEY, 
+    id  	   	 INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, 
     name 		 VARCHAR(20),
     score  	 INTEGER NOT NULL
   );
